@@ -2,11 +2,10 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test3/","dg-note-properties":{}}
 ---
 
-# 🕹️ Перерыв на ИБ-12 | Терминальный Тетрис v1.8
+# 🕹️ Перерыв на ИБ-12 | Терминальный Тетрис v1.9
 
 _Управление на ПК: Стрелочки (Влево/Вправо — движение, Вверх — поворот, Вниз — ускорить падение), Пробел — мгновенный сброс._
 
-<!-- Изолированный супер-враппер для центрирования и сжатия отступов -->
 <div id="tetris-super-wrapper">
   <div id="game-container">
     <div id="score-board">Счёт: <span id="score">0</span> | Линии: <span id="lines">0</span></div>
@@ -27,7 +26,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
         <button class="dpad-btn" onclick="handleDpad(40)">🔽</button>
         <button class="dpad-btn" onclick="handleDpad(39)">▶️</button>
       </div>
-      <div class="dpad-row" style="margin-top: 3px !important;">
+      <div class="dpad-row" style="margin-top: 5px !important;">
         <button class="dpad-btn drop-btn" onclick="handleDpad(32)">💥 МГНОВЕННЫЙ СБРОС 💥</button>
       </div>
     </div>
@@ -43,7 +42,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     }
   }
 
-  /* Полное принудительное центрирование и схлопывание внешних параграфов */
+  /* Схлопывание внешних параграфов и центрирование */
   #tetris-super-wrapper {
     width: 100% !important;
     display: flex !important;
@@ -70,7 +69,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     align-items: center !important;
     margin-top: 10px !important;
   }
-  #score-board { font-size: 14px !important; color: #00ff00 !important; margin-bottom: 5px !important; width: 100%; text-align: center !important; }
+  #score-board { font-size: 14px !important; color: #00ff00 !important; margin-bottom: 6px !important; width: 100%; text-align: center !important; }
   
   #canvas-wrapper {
     width: 240px !important;
@@ -93,7 +92,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     display: none !important; 
   }
 
-  /* НА СМАРТФОНАХ: Сжимаем поле и жестко притягиваем джойстик наверх */
+  /* НА СМАРТФОНАХ: Фиксируем джойстик вплотную под полем */
   @media (max-width: 768px) { 
     #game-container {
       width: 100% !important;
@@ -102,7 +101,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     #canvas-wrapper {
       width: 100% !important;
       height: auto !important;
-      max-width: 175px !important; /* Оптимальное сжатие стакана на мобилках */
+      max-width: 175px !important; 
     }
     canvas {
       width: 100% !important;
@@ -112,13 +111,13 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
       display: flex !important; 
       flex-direction: column !important;
       align-items: center !important;
-      margin-top: 5px !important; /* Кнопки прижаты строго под стаканом */
+      margin-top: 2px !important; /* Вплотную к нижней рамке Canvas */
       width: 100% !important;
-      max-height: 240px !important; /* Защита от расползания вниз */
+      max-height: 240px !important; 
     } 
   }
 
-  /* Стили крестовины */
+  /* Стили d-pad */
   .dpad-row {
     display: flex !important;
     justify-content: center !important;
@@ -209,14 +208,15 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     return matrix;
   }
 
+  /* 🛡️ НАДЕЖНЫЙ СИНТАКСИС: Предотвращает вырезание массивов генератором Quartz */
   function createPiece(type) {
-    if (type === 'T') return [[0, 1, 0], [1, 1, 1], [0, 0, 0\|0, 1, 0], [1, 1, 1], [0, 0, 0]];
-    if (type === 'O') return [[2, 2], [2, 2\|2, 2], [2, 2]];
-    if (type === 'L') return [[0, 0, 3], [3, 3, 3], [0, 0, 0\|0, 0, 3], [3, 3, 3], [0, 0, 0]];
-    if (type === 'J') return [[4, 0, 0], [4, 4, 4], [0, 0, 0\|4, 0, 0], [4, 4, 4], [0, 0, 0]];
-    if (type === 'I') return [[0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0\|0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0]];
-    if (type === 'S') return [[0, 6, 6], [6, 6, 0], [0, 0, 0\|0, 6, 6], [6, 6, 0], [0, 0, 0]];
-    if (type === 'Z') return [[7, 7, 0], [0, 7, 7], [0, 0, 0\|7, 7, 0], [0, 7, 7], [0, 0, 0]];
+    if (type === 'T') return [[0,1,0],[1,1,1],[0,0,0\|0,1,0],[1,1,1],[0,0,0]];
+    if (type === 'O') return [[2,2],[2,2\|2,2],[2,2]];
+    if (type === 'L') return [[0,0,3],[3,3,3],[0,0,0\|0,0,3],[3,3,3],[0,0,0]];
+    if (type === 'J') return [[4,0,0],[4,4,4],[0,0,0\|4,0,0],[4,4,4],[0,0,0]];
+    if (type === 'I') return [[0,5,0,0],[0,5,0,0],[0,5,0,0],[0,5,0,0\|0,5,0,0],[0,5,0,0],[0,5,0,0],[0,5,0,0]];
+    if (type === 'S') return [[0,6,6],[6,6,0],[0,0,0\|0,6,6],[6,6,0],[0,0,0]];
+    if (type === 'Z') return [[7,7,0],[0,7,7],[0,0,0\|7,7,0],[0,7,7],[0,0,0]];
   }
 
   function draw() {
@@ -355,3 +355,11 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
   function handleDpad(code) {
     if (code === 37) playerMove(-1);
     if (code === 39) playerMove(1);
+    if (code === 40) playerDrop();
+    if (code === 38) playerRotate(1);
+    if (code === 32) playerHardDrop();
+  }
+
+  let score = 0;
+  let lines = 0;
+  playerReset();
