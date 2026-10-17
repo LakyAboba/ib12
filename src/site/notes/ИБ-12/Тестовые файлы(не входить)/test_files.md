@@ -65,6 +65,8 @@ _Каждый может отмечать галочками свои задач
 
 ---
 
+---
+
 ## 📓 Мои личные заметки к ДЗ
 _Этот блокнот персональный. Текст видишь только ты, и он автоматически сохраняется в твоём браузере!_
 
@@ -77,23 +79,21 @@ _Этот блокнот персональный. Текст видишь то�
 </div>
 
 <style>
-  /* Растягиваем контейнер на 100% ширины экрана, игнорируя ограничения темы */
+  /* Жестко выбиваем контейнер на 100% ширины видимого окна устройства */
   #personal-notebook-container {
-    width: 100vw !important;
+    width: calc(100vw - 30px) !important; /* Автоматический расчет полной ширины с учетом зазоров */
     max-width: 100vw !important;
     position: relative !important;
     left: 50% !important;
-    right: 50% !important;
-    margin-left: -50vw !important;
-    margin-right: -50vw !important;
-    padding: 0 20px !important; /* Небольшой отступ по краям дисплея, чтобы текст не прилипал к стеклу телефона */
+    transform: translateX(-50%) !important; /* Идеальное центрирование относительно краев экрана */
+    margin: 15px 0 !important;
     box-sizing: border-box !important;
     text-align: left !important;
   }
   
   #personal-notebook {
-    width: 100% !important;
-    height: 200px !important; /* Увеличили высоту для удобства */
+    width: 100% !important; /* Изначально занимает всю ширину контейнера */
+    height: 200px !important; 
     background: #1e1e1e !important;
     color: #00ff00 !important;
     border: 2px solid #00ff00 !important;
@@ -102,7 +102,7 @@ _Этот блокнот персональный. Текст видишь то�
     font-family: monospace !important;
     font-size: 15px !important;
     line-height: 1.5 !important;
-    resize: vertical !important; /* Можно растягивать только вниз */
+    resize: vertical !important; /* Возможность ручного растягивания вниз сохранена */
     box-sizing: border-box !important;
     box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
   }
@@ -116,7 +116,6 @@ _Этот блокнот персональный. Текст видишь то�
     font-size: 12px !important;
     color: #888888 !important;
     margin-top: 6px !important;
-    margin-right: 25px !important; /* Выравнивание под правый край поля */
     font-style: italic !important;
     text-align: right !important;
     transition: opacity 0.3s ease;
