@@ -74,9 +74,9 @@ _Этот блокнот персональный. Текст видишь то�
 <div id="personal-notebook-container">
   <textarea 
     id="personal-notebook" 
-    placeholder="Впиши сюда свои дедлайны, номера задач по вариантам или ссылки на отчёты... Программа всё запомнит!"
+    placeholder="Привет"
   ></textarea>
-  <div id="notebook-status">✓ Все изменения сохранены локально</div>
+  <div id="notebook-status">✓ Сохранено локально</div>
 </div>
 
 <style>
