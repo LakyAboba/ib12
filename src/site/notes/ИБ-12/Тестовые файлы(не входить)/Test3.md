@@ -4,16 +4,18 @@
 
 # 🧠 Проверка на прочность ИБ-12 | DOS DOOM (1993)
 
-_Управление: кликни мышкой по окну игры, чтобы активировать управление. Клавиатура: Стрелочки/WASD — движение, Ctrl — огонь, Пробел — открыть дверь._
+_Управление: кликни мышкой по окну игры, чтобы активировать клавиатуру. Стрелочки/WASD — движение, Ctrl/ЛКМ — огонь, Пробел — открыть дверь._
 
 <div id="doom-super-wrapper">
   <div id="doom-container">
-    <!-- Изолированное фрейм-окно с оригинальным эмулятором DOOM Shareware -->
+    <!-- Изолированное фрейм-окно со стабильного незаблокированного CDN -->
     <iframe 
-      src="https://dos.zone" 
+      src="https://archive.org" 
       width="100%" 
       height="100%" 
       frameborder="0" 
+      webkitallowfullscreen="true" 
+      mozallowfullscreen="true" 
       allowfullscreen>
     </iframe>
   </div>
