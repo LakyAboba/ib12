@@ -76,7 +76,7 @@ _Этот блокнот персональный. Текст видишь то�
     id="personal-notebook" 
     rows="15" 
     style="width: 100%; max-width: 100%; background-color: #1e1e1e; color: #00ff00; border: 2px solid #00ff00; border-radius: 8px; padding: 15px; font-family: monospace; font-size: 18px; line-height: 1.6; box-sizing: border-box;"
-    placeholder="Впиши сюда свои дедлайны, номера задач по вариантам или ссылки на отчёты... Программа всё запомнит!"
+    placeholder="Введите текст, авава..."
   ></textarea>
   <div id="notebook-status" style="font-size: 12px; color: #888888; margin-top: 5px; font-style: italic; text-align: right; transition: opacity 0.3s ease; opacity: 0;">✓ Все изменения сохранены локально</div>
 </div>
