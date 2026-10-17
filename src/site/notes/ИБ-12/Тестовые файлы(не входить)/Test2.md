@@ -2,136 +2,136 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test2/","dg-note-properties":{}}
 ---
 
-# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.8
+# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.9
 
 _Управление: стрелочки на клавиатуре (на ПК) или супер-гигантская крестовина (на телефонах)._
 
-<!-- Фиксированный центрирующий контейнер -->
-<div align="center" style="width: 100%; text-align: center !important; margin: 0 auto !important; padding: 0 !important;">
-
+<div id="game-super-wrapper">
   <div id="game-container">
     <div id="score-board">Счёт: <span id="score">0</span> | Рекорд: <span id="high-score">0</span></div>
     
-    <!-- Контейнер холста с жестким ограничением размеров -->
+    <!-- Изолированный контейнер холста -->
     <div id="canvas-wrapper">
       <canvas id="gameCanvas" width="400" height="400"></canvas>
     </div>
     
-    <!-- Супер-гигантская крестовина управления, прижатая к полю -->
-    <div id="controls-wrapper" align="center">
-      <table id="dpad-table" align="center">
-        <tr>
-          <td></td>
-          <td><button class="dpad-btn" onclick="changeDirection({keyCode: 38})">🔼</button></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td><button class="dpad-btn" onclick="changeDirection({keyCode: 37})">◀️</button></td>
-          <td><button class="dpad-btn" onclick="changeDirection({keyCode: 40})">🔽</button></td>
-          <td><button class="dpad-btn" onclick="changeDirection({keyCode: 39})">▶️</button></td>
-        </tr>
-      </table>
+    <!-- Компактная блочная крестовина, прижатая к полю -->
+    <div id="controls-wrapper">
+      <div class="dpad-row">
+        <div class="dpad-empty"></div>
+        <button class="dpad-btn" onclick="changeDirection({keyCode: 38})">🔼</button>
+        <div class="dpad-empty"></div>
+      </div>
+      <div class="dpad-row">
+        <button class="dpad-btn" onclick="changeDirection({keyCode: 37})">◀️</button>
+        <button class="dpad-btn" onclick="changeDirection({keyCode: 40})">🔽</button>
+        <button class="dpad-btn" onclick="changeDirection({keyCode: 39})">▶️</button>
+      </div>
     </div>
   </div>
-
 </div>
 
 <style>
-  #game-container { 
-    text-align: center !important; 
-    font-family: monospace; 
-    background: #111; 
-    padding: 8px !important; 
-    border-radius: 10px; 
-    max-width: 250px; /* Жестко зажали контейнер под пиксельный размер ПК-версии */
-    margin: 0 auto !important; 
-    color: #00ff00;
-    box-sizing: border-box !important;
-    display: block;
-  }
-  #score-board { font-size: 13px; margin-bottom: 5px; }
-  
-  /* НА ПК: Идеальный мини-масштаб холста, сжатый стилями CSS (не обрезает поле!) */
-  #canvas-wrapper {
-    width: 230px !important;  /* Пиксельная ширина контейнера на ПК */
-    height: 230px !important; /* Пиксельная высота контейнера на ПК */
+  /* Полная изоляция от темы сайта */
+  #game-super-wrapper {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 0 !important;
     margin: 0 auto !important;
+  }
+  #game-container { 
+    font-family: monospace; 
+    background: #111 !important; 
+    padding: 10px !important; 
+    border-radius: 10px !important; 
+    width: 250px !important; /* Фиксированная ширина на ПК */
+    max-width: 250px !important;
     box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  #score-board { font-size: 14px !important; color: #00ff00 !important; margin-bottom: 6px !important; }
+  
+  /* НА ПК: Сжатие холста до 230x230px, чтобы поле было видно ЦЕЛИКОМ */
+  #canvas-wrapper {
+    width: 230px !important;
+    height: 230px !important;
     display: block !important;
+    box-sizing: border-box !important;
+    margin: 0 auto !important;
   }
   canvas { 
     border: 2px solid #00ff00 !important; 
     background-color: #000 !important; 
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3) !important;
     display: block !important;
-    width: 230px !important;   /* Жестко задаем ширину отображения */
-    height: 230px !important;  /* Жестко задаем высоту отображения */
+    width: 230px !important;   
+    height: 230px !important;  
     box-sizing: border-box !important;
   }
   
-  /* НА ПК: Полностью вырезаем блок кнопок */
+  /* НА ПК: Полностью вырезаем кнопки управления */
   #controls-wrapper { 
     display: none !important; 
   }
 
-  /* Стили СУПЕР-ГИГАНТСКОЙ крестовины, максимально поднятой вверх */
-  #dpad-table {
-    margin: 0 auto !important;
-    border-collapse: collapse !important;
-    border: none !important;
-    background: transparent !important;
-  }
-  #dpad-table td {
-    width: 115px !important;  
-    height: 100px !important; 
-    padding: 1px !important;  /* Минимальные зазоры */
-    border: none !important;
-    text-align: center !important;
-    vertical-align: middle !important;
-    background: transparent !important;
-  }
-  .dpad-btn { 
-    width: 100% !important;
-    height: 100% !important;
-    font-size: 42px !important; 
-    background: #222 !important; 
-    border: 2px solid #00ff00 !important; 
-    color: #00ff00 !important; 
-    border-radius: 18px !important; 
-    cursor: pointer !important; 
-    padding: 0 !important;
-    margin: 0 !important;
-    box-sizing: border-box !important;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.6);
-  }
-  .dpad-btn:active {
-    background: #00ff00 !important;
-    color: #000 !important;
-  }
-
-  /* НА ТЕЛЕФОНАХ: Разворачиваем игру, поднимаем кнопки вплотную к полю */
+  /* НА СМАРТФОНАХ: Перестраиваем размеры и поднимаем кнопки наверх */
   @media (max-width: 768px) { 
     #game-container {
-      max-width: 100% !important;
-      padding: 6px !important;
+      width: 100% !important;
+      max-width: 340px !important; /* Контейнер растягивается под мобильный экран */
     }
     #canvas-wrapper {
       width: 100% !important;
       height: auto !important;
-      max-width: 310px !important; 
+      max-width: 320px !important; 
     }
     canvas {
       width: 100% !important;
       height: auto !important;
     }
+    /* Показываем кнопки и убираем отступы, прижимая их к Canvas */
     #controls-wrapper { 
-      display: block !important; 
-      visibility: visible !important;
-      margin: 0 auto !important; /* Полностью убрали верхний отступ — кнопки прижаты к полю */
-      padding-top: 0 !important;
+      display: flex !important; 
+      flex-direction: column !important;
+      align-items: center !important;
+      margin-top: 5px !important; /* Минимальный зазор под полем */
       width: 100% !important;
-      text-align: center !important;
     } 
+  }
+
+  /* Стили блочной крестовины (D-pad) */
+  .dpad-row {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .dpad-btn, .dpad-empty {
+    width: 105px !important;  /* Сверх-большой размер */
+    height: 90px !important;
+    box-sizing: border-box !important;
+    margin: 2px !important;
+  }
+  .dpad-btn { 
+    font-size: 38px !important; 
+    background: #222 !important; 
+    border: 2px solid #00ff00 !important; 
+    color: #00ff00 !important; 
+    border-radius: 16px !important; 
+    cursor: pointer !important; 
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.6) !important;
+  }
+  .dpad-btn:active {
+    background: #00ff00 !important;
+    color: #000 !important;
   }
 </style>
 
