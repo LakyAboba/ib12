@@ -4,24 +4,23 @@
 
 # 🧠 Проверка на прочность ИБ-12 | DOS DOOM (1993)
 
-_Управление: Стрелочки или WASD — движение, Ctrl — огонь, Пробел — открыть дверь/рычаг, Alt + Стрелочки — стрейф (боковой шаг)._
+_Управление: кликни мышкой по окну игры, чтобы активировать управление. Клавиатура: Стрелочки/WASD — движение, Ctrl — огонь, Пробел — открыть дверь._
 
-<!-- Инкапсулированный контейнер для изоляции от темы Quartz -->
-<div align="center" style="width: 100%; text-align: center !important; margin: 0 auto !important;">
-
+<div id="doom-super-wrapper">
   <div id="doom-container">
-    <!-- Окно эмулятора js-dos -->
-    <div id="jsdos-player"></div>
+    <!-- Изолированное фрейм-окно с оригинальным эмулятором DOOM Shareware -->
+    <iframe 
+      src="https://dos.zone" 
+      width="100%" 
+      height="100%" 
+      frameborder="0" 
+      allowfullscreen>
+    </iframe>
   </div>
-
 </div>
 
-<!-- Подключаем оригинальные библиотеки эмулятора DOSBox через защищенный CDN -->
-<link rel="stylesheet" href="https://js-dos.com">
-<script src="https://js-dos.com"></script>
-
 <style>
-  /* Фиксируем скролл на ПК, чтобы экран не прыгал при нажатии на Пробел или Стрелочки */
+  /* Блокируем скролл страницы на ПК, чтобы экран не прыгал при нажатии на Пробел */
   @media (min-width: 769px) {
     html, body, .quartz-page, main, article {
       overflow: hidden !important;
@@ -29,45 +28,32 @@ _Управление: Стрелочки или WASD — движение, Ctrl
     }
   }
 
+  #doom-super-wrapper {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+  }
+
   #doom-container {
-    width: 640px;
-    height: 400px;
+    width: 680px;
+    height: 440px;
     background: #000;
     border: 3px solid #ff0000;
-    border-radius: 8px;
+    border-radius: 10px;
     box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
     margin: 15px auto !important;
     overflow: hidden;
+    box-sizing: border-box;
   }
 
-  #jsdos-player {
-    width: 100%;
-    height: 100%;
-  }
-
-  /* Адаптивность для мобилок, чтобы окно пропорционально сжималось */
+  /* Адаптивность для мобильных телефонов */
   @media (max-width: 768px) {
     #doom-container {
       width: 100% !important;
-      height: 240px !important;
+      height: 280px !important;
     }
   }
 </style>
-
-<script>
-  // Запуск DOSBox и автоматическое скачивание оригинального Shareware-архива DOOM
-  document.addEventListener("DOMContentLoaded", function() {
-    if (typeof Dos !== "undefined") {
-      Dos(document.getElementById("jsdos-player"), {
-        wdosboxUrl: "https://js-dos.com",
-        cycles: 15000, // Оптимальная скорость процессора 486 DX2 для плавной игры
-        autostart: true
-      }).then((runtime) => {
-        // Скачиваем архив с классическим DOOM1.WAD с надежного CDN js-dos
-        runtime.bootstrap("https://js-dos.com").then(() => {
-          console.log("DOOM успешно загружен в ИБ-12!");
-        });
-      });
-    }
-  });
-</script>
