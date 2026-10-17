@@ -2,7 +2,7 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test2/","dg-note-properties":{}}
 ---
 
-# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.9
+# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v3.0
 
 _Управление: стрелочки на клавиатуре (на ПК) или супер-гигантская крестовина (на телефонах)._
 
@@ -32,6 +32,14 @@ _Управление: стрелочки на клавиатуре (на ПК) 
 </div>
 
 <style>
+  /* НА ПК: Полностью отключаем прокрутку страницы и убираем полосы прокрутки */
+  @media (min-width: 769px) {
+    html, body, .quartz-page, main, article {
+      overflow: hidden !important;
+      height: 100% !important;
+    }
+  }
+
   /* Полная изоляция от темы сайта */
   #game-super-wrapper {
     width: 100% !important;
@@ -52,6 +60,7 @@ _Управление: стрелочки на клавиатуре (на ПК) 
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
+    margin-top: 10px !important;
   }
   #score-board { font-size: 14px !important; color: #00ff00 !important; margin-bottom: 6px !important; }
   
