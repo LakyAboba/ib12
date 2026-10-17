@@ -2,7 +2,7 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test3/","dg-note-properties":{}}
 ---
 
-# 🕹️ Перерыв на ИБ-12 | Терминальный Тетрис v1.6
+# 🕹️ Перерыв на ИБ-12 | Терминальный Тетрис v1.7
 
 _Управление на ПК: Стрелочки (Влево/Вправо — движение, Вверх — поворот, Вниз — ускорить падение), Пробел — мгновенный сброс._
 
@@ -181,7 +181,6 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     for (let y = 0; y < m.length; ++y) {
       for (let x = 0; x < m[y].length; ++x) {
         if (m[y][x] !== 0) {
-          // Проверка выхода за нижнюю границу или столкновения с блоками
           if (arena[y + o.y] === undefined || 
               arena[y + o.y][x + o.x] === undefined || 
               arena[y + o.y][x + o.x] !== 0) {
@@ -201,15 +200,15 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     return matrix;
   }
 
-  // ЗАЩИТА ОТ КВАРЦА: Передаем фигуры строками, парсим через JSON!
+  /* ЖЕСТКИЕ МАТРИЦЫ С ЯВНЫМИ НУЛЯМИ: Теперь у фигур железно есть дно и физика! */
   function createPiece(type) {
-    if (type === 'T') return JSON.parse("[[0,1,0],[1,1,1],[0,0,0]]");
-    if (type === 'O') return JSON.parse("[[2,2],[2,2]]");
-    if (type === 'L') return JSON.parse("[[0,0,3],[3,3,3],[0,0,0]]");
-    if (type === 'J') return JSON.parse("[[4,0,0],[4,4,4],[0,0,0]]");
-    if (type === 'I') return JSON.parse("[[0,0,0,0],[5,5,5,5],[0,0,0,0],[0,0,0,0]]");
-    if (type === 'S') return JSON.parse("[[0,6,6],[6,6,0],[0,0,0]]");
-    if (type === 'Z') return JSON.parse("[[7,7,0],[0,7,7],[0,0,0]]");
+    if (type === 'T') return [[0, 1, 0], [1, 1, 1], [0, 0, 0]];
+    if (type === 'O') return [[2, 2], [2, 2]];
+    if (type === 'L') return [[0, 0, 3], [3, 3, 3], [0, 0, 0]];
+    if (type === 'J') return [[4, 0, 0], [4, 4, 4], [0, 0, 0]];
+    if (type === 'I') return [[0, 0, 0, 0], [5, 5, 5, 5], [0, 0, 0, 0], [0, 0, 0, 0]];
+    if (type === 'S') return [[0, 6, 6], [6, 6, 0], [0, 0, 0]];
+    if (type === 'Z') return [[7, 7, 0], [0, 7, 7], [0, 0, 0]];
   }
 
   function draw() {
@@ -281,7 +280,6 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     player.pos.y = 0;
     player.pos.x = Math.floor(arena[0].length / 2) - Math.floor(player.matrix[0].length / 2);
     
-    // Если сразу при спавне столкновение — Game Over
     if (collide(arena, player)) {
       alert('Игра окончена! Счёт: ' + score);
       arena.forEach(row => row.fill(0));
@@ -299,7 +297,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     while (collide(arena, player)) {
       player.pos.x += offset;
       offset = -(offset + (offset > 0 ? 1 : -1));
-      if (offset > player.matrix[0].length) {
+      if (offset > player.matrix.length) {
         rotate(player.matrix, -dir);
         player.pos.x = pos;
         return;
