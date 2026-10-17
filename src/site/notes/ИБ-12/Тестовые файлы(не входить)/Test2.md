@@ -2,15 +2,19 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test2/","dg-note-properties":{}}
 ---
 
-# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.1
+# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.2
 
-_Управление: стрелочки на клавиатуре или кнопки на экране (для мобилок). Змейка теперь умеет проходить сквозь стены!_
+_Управление: стрелочки на клавиатуре или кнопки на экране (для мобилок). Змейка умеет проходить сквозь стены!_
 
 <div id="game-container">
   <div id="score-board">Счёт: <span id="score">0</span> | Рекорд: <span id="high-score">0</span></div>
-  <canvas id="gameCanvas" width="500" height="500"></canvas>
   
-  <!-- Ровный игровой крестик для телефонов -->
+  <!-- Обертка для адаптивного сжатия холста -->
+  <div id="canvas-wrapper">
+    <canvas id="gameCanvas" width="500" height="500"></canvas>
+  </div>
+  
+  <!-- Идеальный d-pad крестик для телефонов -->
   <div id="controls-wrapper">
     <div id="controls">
       <button class="btn-up" onclick="changeDirection({keyCode: 38})">🔼</button>
@@ -22,20 +26,49 @@ _Управление: стрелочки на клавиатуре или кн�
 </div>
 
 <style>
-  #game-container { text-align: center; font-family: monospace; background: #111; padding: 20px; border-radius: 10px; max-width: 540px; margin: 0 auto; color: #00ff00; }
-  #score-board { font-size: 20px; margin-bottom: 10px; }
-  canvas { border: 2px solid #00ff00; background-color: #000; display: block; margin: 0 auto; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
+  #game-container { 
+    text-align: center; 
+    font-family: monospace; 
+    background: #111; 
+    padding: 15px; 
+    border-radius: 10px; 
+    max-width: 540px; 
+    margin: 0 auto; 
+    color: #00ff00;
+    box-sizing: border-box;
+  }
+  #score-board { font-size: 18px; margin-bottom: 10px; }
+  
+  /* Контейнер для авто-масштабирования игрового поля на мобилках */
+  #canvas-wrapper {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  canvas { 
+    border: 2px solid #00ff00; 
+    background-color: #000; 
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+    width: 100% !important; /* Заставляет холст сжиматься под экран */
+    height: auto !important;
+    display: block;
+  }
   
   /* Контейнер управления на мобилках */
-  #controls-wrapper { margin-top: 20px; display: none; justify-content: center; }
+  #controls-wrapper { 
+    margin-top: 20px; 
+    display: none; 
+    justify-content: center; 
+    width: 100%;
+  }
   
-  /* Сетка 3х3 для идеального крестика */
+  /* Жесткая сетка 3х3 для идеального крестика (D-pad) */
   #controls { 
-    display: grid; 
-    grid-template-columns: repeat(3, 60px); 
-    grid-template-rows: repeat(3, 55px); 
-    gap: 5px; 
-    justify-content: center;
+    display: grid !important; 
+    grid-template-columns: 60px 60px 60px !important; 
+    grid-template-rows: 55px 55px !important; 
+    gap: 5px !important; 
+    justify-content: center !important;
   }
   #controls button { 
     font-size: 22px; 
@@ -44,18 +77,23 @@ _Управление: стрелочки на клавиатуре или кн�
     color: #00ff00; 
     border-radius: 8px; 
     cursor: pointer; 
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
+    padding: 0;
+    box-sizing: border-box;
   }
   
-  /* Раскладываем кнопки по координатам сетки */
-  .btn-up { grid-column: 2; grid-row: 1; }
-  .btn-left { grid-column: 1; grid-row: 2; }
-  .btn-down { grid-column: 2; grid-row: 2; }
-  .btn-right { grid-column: 3; grid-row: 2; }
+  /* Фиксируем позиции кнопок в сетке, исключая их выстраивание в ряд */
+  .btn-up { grid-column: 2 !important; grid-row: 1 !important; }
+  .btn-left { grid-column: 1 !important; grid-row: 2 !important; }
+  .btn-down { grid-column: 2 !important; grid-row: 2 !important; }
+  .btn-right { grid-column: 3 !important; grid-row: 2 !important; }
 
-  @media (max-width: 768px) { #controls-wrapper { display: flex; } }
+  /* Включаем джойстик только на сенсорных экранах/смартфонах */
+  @media (max-width: 768px) { 
+    #controls-wrapper { display: flex !important; } 
+  }
 </style>
 
 <script>
