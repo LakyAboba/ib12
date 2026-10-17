@@ -2,12 +2,12 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test2/","dg-note-properties":{}}
 ---
 
-# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.7
+# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.8
 
 _Управление: стрелочки на клавиатуре (на ПК) или супер-гигантская крестовина (на телефонах)._
 
 <!-- Фиксированный центрирующий контейнер -->
-<div align="center" style="width: 100%; text-align: center !important; margin: 0 auto !important;">
+<div align="center" style="width: 100%; text-align: center !important; margin: 0 auto !important; padding: 0 !important;">
 
   <div id="game-container">
     <div id="score-board">Счёт: <span id="score">0</span> | Рекорд: <span id="high-score">0</span></div>
@@ -43,7 +43,7 @@ _Управление: стрелочки на клавиатуре (на ПК) 
     background: #111; 
     padding: 8px !important; 
     border-radius: 10px; 
-    max-width: 216px; /* Жестко ограничили ширину контейнера под размер поля на ПК */
+    max-width: 250px; /* Жестко зажали контейнер под пиксельный размер ПК-версии */
     margin: 0 auto !important; 
     color: #00ff00;
     box-sizing: border-box !important;
@@ -51,20 +51,21 @@ _Управление: стрелочки на клавиатуре (на ПК) 
   }
   #score-board { font-size: 13px; margin-bottom: 5px; }
   
-  /* НА ПК: Мини-масштаб холста (200x240px с рамкой), поле сжато и видно целиком */
+  /* НА ПК: Идеальный мини-масштаб холста, сжатый стилями CSS (не обрезает поле!) */
   #canvas-wrapper {
-    width: 200px !important;
-    height: 200px !important;
+    width: 230px !important;  /* Пиксельная ширина контейнера на ПК */
+    height: 230px !important; /* Пиксельная высота контейнера на ПК */
     margin: 0 auto !important;
     box-sizing: border-box !important;
+    display: block !important;
   }
   canvas { 
     border: 2px solid #00ff00 !important; 
     background-color: #000 !important; 
     box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
     display: block !important;
-    width: 100% !important;   /* Масштабируем внутреннюю графику 400x400 */
-    height: 100% !important;  /* под внешние пиксельные размеры */
+    width: 230px !important;   /* Жестко задаем ширину отображения */
+    height: 230px !important;  /* Жестко задаем высоту отображения */
     box-sizing: border-box !important;
   }
   
@@ -81,9 +82,9 @@ _Управление: стрелочки на клавиатуре (на ПК) 
     background: transparent !important;
   }
   #dpad-table td {
-    width: 115px !important;  /* Сверх-большая ширина для пальцев */
-    height: 100px !important; /* Сверх-большая высота для пальцев */
-    padding: 2px !important;  /* Минимальные зазоры между кнопками */
+    width: 115px !important;  
+    height: 100px !important; 
+    padding: 1px !important;  /* Минимальные зазоры */
     border: none !important;
     text-align: center !important;
     vertical-align: middle !important;
@@ -92,7 +93,7 @@ _Управление: стрелочки на клавиатуре (на ПК) 
   .dpad-btn { 
     width: 100% !important;
     height: 100% !important;
-    font-size: 42px !important; /* Огромные стрелки-эмодзи */
+    font-size: 42px !important; 
     background: #222 !important; 
     border: 2px solid #00ff00 !important; 
     color: #00ff00 !important; 
@@ -108,7 +109,7 @@ _Управление: стрелочки на клавиатуре (на ПК) 
     color: #000 !important;
   }
 
-  /* НА ТЕЛЕФОНАХ: Разворачиваем игру и убираем лишние отступы */
+  /* НА ТЕЛЕФОНАХ: Разворачиваем игру, поднимаем кнопки вплотную к полю */
   @media (max-width: 768px) { 
     #game-container {
       max-width: 100% !important;
@@ -117,12 +118,17 @@ _Управление: стрелочки на клавиатуре (на ПК) 
     #canvas-wrapper {
       width: 100% !important;
       height: auto !important;
-      max-width: 310px; 
+      max-width: 310px !important; 
+    }
+    canvas {
+      width: 100% !important;
+      height: auto !important;
     }
     #controls-wrapper { 
       display: block !important; 
       visibility: visible !important;
-      margin: 5px auto 0 auto !important; /* Практически вплотную прижали джойстик к полю */
+      margin: 0 auto !important; /* Полностью убрали верхний отступ — кнопки прижаты к полю */
+      padding-top: 0 !important;
       width: 100% !important;
       text-align: center !important;
     } 
