@@ -2,80 +2,86 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test2/","dg-note-properties":{}}
 ---
 
-# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.4
+# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.5
 
-_Управление: стрелочки на клавиатуре (на ПК) или удобная большая крестовина на экране (на телефонах)._
+_Управление: стрелочки на клавиатуре (на ПК) или гигантская центрированная крестовина (на телефонах)._
 
-<div id="game-container">
-  <div id="score-board">Счёт: <span id="score">0</span> | Рекорд: <span id="high-score">0</span></div>
-  
-  <!-- Адаптивный контейнер для холста -->
-  <div id="canvas-wrapper">
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
+<!-- Центрирующий внешний контейнер -->
+<div align="center" style="width: 100%; text-align: center !important;">
+
+  <div id="game-container">
+    <div id="score-board">Счёт: <span id="score">0</span> | Рекорд: <span id="high-score">0</span></div>
+    
+    <!-- Компактный контейнер для ПК (280px) и адаптивный для мобилок -->
+    <div id="canvas-wrapper">
+      <canvas id="gameCanvas" width="400" height="400"></canvas>
+    </div>
+    
+    <!-- Огромная крестовина, выровненная по центру через HTML-атрибут -->
+    <div id="controls-wrapper" align="center">
+      <table id="dpad-table" align="center">
+        <tr>
+          <td></td>
+          <td><button class="dpad-btn" onclick="changeDirection({keyCode: 38})">🔼</button></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><button class="dpad-btn" onclick="changeDirection({keyCode: 37})">◀️</button></td>
+          <td><button class="dpad-btn" onclick="changeDirection({keyCode: 40})">🔽</button></td>
+          <td><button class="dpad-btn" onclick="changeDirection({keyCode: 39})">▶️</button></td>
+        </tr>
+      </table>
+    </div>
   </div>
-  
-  <!-- Большая центрированная крестовина (D-pad) для мобилок -->
-  <div id="controls-wrapper">
-    <table id="dpad-table">
-      <tr>
-        <td></td>
-        <td><button class="dpad-btn" onclick="changeDirection({keyCode: 38})">🔼</button></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><button class="dpad-btn" onclick="changeDirection({keyCode: 37})">◀️</button></td>
-        <td><button class="dpad-btn" onclick="changeDirection({keyCode: 40})">🔽</button></td>
-        <td><button class="dpad-btn" onclick="changeDirection({keyCode: 39})">▶️</button></td>
-      </tr>
-    </table>
-  </div>
+
 </div>
 
 <style>
   #game-container { 
-    text-align: center; 
+    text-align: center !important; 
     font-family: monospace; 
     background: #111; 
-    padding: 15px; 
+    padding: 12px; 
     border-radius: 10px; 
-    max-width: 440px; 
-    margin: 0 auto; 
+    max-width: 320px; /* Сузили общий контейнер для ПК */
+    margin: 0 auto !important; 
     color: #00ff00;
     box-sizing: border-box;
+    display: block;
   }
-  #score-board { font-size: 18px; margin-bottom: 12px; }
+  #score-board { font-size: 16px; margin-bottom: 8px; }
   
-  /* НА ПК: Уменьшенный и аккуратный размер игрового поля (350x350px) */
+  /* НА ПК: Идеальный мини-масштаб игрового поля (280x280px) */
   #canvas-wrapper {
-    width: 350px;
-    height: 350px;
-    margin: 0 auto;
+    width: 280px !important;
+    height: 280px !important;
+    margin: 0 auto !important;
   }
   canvas { 
     border: 2px solid #00ff00; 
     background-color: #000; 
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+    box-shadow: 0 0 12px rgba(0, 255, 0, 0.3);
     display: block;
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
   }
   
-  /* НА ПК: Кнопки гарантированно и полностью скрыты */
+  /* НА ПК: Кнопки гарантированно вырезаны */
   #controls-wrapper { 
     display: none !important; 
   }
 
-  /* Стили большой и отцентрированной таблицы-крестовины */
+  /* Жесткие стили ГИГАНТСКОЙ таблицы-крестовины */
   #dpad-table {
-    margin: 0 auto !important; /* Центрирование таблицы по горизонтали */
+    margin: 0 auto !important;
     border-collapse: collapse !important;
     border: none !important;
     background: transparent !important;
   }
   #dpad-table td {
-    width: 75px !important;  /* Увеличили ширину ячейки кнопки */
-    height: 70px !important; /* Увеличили высоту ячейки кнопки */
-    padding: 4px !important;
+    width: 90px !important;  /* Огромная ширина под пальцы */
+    height: 80px !important; /* Огромная высота под пальцы */
+    padding: 5px !important;
     border: none !important;
     text-align: center !important;
     vertical-align: middle !important;
@@ -84,39 +90,39 @@ _Управление: стрелочки на клавиатуре (на ПК) 
   .dpad-btn { 
     width: 100% !important;
     height: 100% !important;
-    font-size: 26px !important; /* Сделали эмодзи стрелочек крупнее */
+    font-size: 32px !important; /* Укрупненные стрелочки */
     background: #222 !important; 
     border: 2px solid #00ff00 !important; 
     color: #00ff00 !important; 
-    border-radius: 12px !important; /* Более плавные скруглённые углы */
+    border-radius: 14px !important; 
     cursor: pointer !important; 
     padding: 0 !important;
     margin: 0 !important;
     box-sizing: border-box !important;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
   }
   .dpad-btn:active {
     background: #00ff00 !important;
     color: #000 !important;
   }
 
-  /* НА СМАРТФОНАХ: Включаем адаптивное сжатие поля под экран и активируем центрированный D-pad */
+  /* НА СМАРТФОНАХ: Разворачиваем поле на максимум и включаем центрированный D-pad */
   @media (max-width: 768px) { 
     #game-container {
-      max-width: 100%;
+      max-width: 100% !important;
+      padding: 10px;
     }
     #canvas-wrapper {
       width: 100% !important;
       height: auto !important;
-    }
-    canvas {
-      width: 100% !important;
-      height: auto !important;
+      max-width: 340px; /* Ограничение, чтобы поле не уходило вниз экрана телефона */
     }
     #controls-wrapper { 
-      display: block !important; /* Показываем блок управления на мобилках */
+      display: block !important; 
+      visibility: visible !important;
+      margin: 20px auto 0 auto !important;
+      width: 100% !important;
       text-align: center !important;
-      margin-top: 25px !important;
     } 
   }
 </style>
@@ -127,7 +133,7 @@ _Управление: стрелочки на клавиатуре (на ПК) 
   const scoreElement = document.getElementById("score");
   const highScoreElement = document.getElementById("high-score");
 
-  const gridSize = 20; // Оптимальный шаг сетки для разрешения 400x400
+  const gridSize = 20; 
   const tileCount = canvas.width / gridSize;
   
   let snake = [{x: 10, y: 10}];
