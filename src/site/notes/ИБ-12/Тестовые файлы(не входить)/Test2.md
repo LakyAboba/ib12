@@ -2,21 +2,22 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test2/","dg-note-properties":{}}
 ---
 
-# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.0
+# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.1
 
 _Управление: стрелочки на клавиатуре или кнопки на экране (для мобилок). Змейка теперь умеет проходить сквозь стены!_
 
 <div id="game-container">
   <div id="score-board">Счёт: <span id="score">0</span> | Рекорд: <span id="high-score">0</span></div>
-  <!-- Размер поля увеличен до 500x500 -->
   <canvas id="gameCanvas" width="500" height="500"></canvas>
   
-  <!-- Кнопки для игры с телефона -->
-  <div id="controls">
-    <button onclick="changeDirection({keyCode: 38})">🔼</button><br>
-    <button onclick="changeDirection({keyCode: 37})">◀️</button>
-    <button onclick="changeDirection({keyCode: 40})">🔽</button>
-    <button onclick="changeDirection({keyCode: 39})">▶️</button>
+  <!-- Ровный игровой крестик для телефонов -->
+  <div id="controls-wrapper">
+    <div id="controls">
+      <button class="btn-up" onclick="changeDirection({keyCode: 38})">🔼</button>
+      <button class="btn-left" onclick="changeDirection({keyCode: 37})">◀️</button>
+      <button class="btn-down" onclick="changeDirection({keyCode: 40})">🔽</button>
+      <button class="btn-right" onclick="changeDirection({keyCode: 39})">▶️</button>
+    </div>
   </div>
 </div>
 
@@ -24,9 +25,37 @@ _Управление: стрелочки на клавиатуре или кн�
   #game-container { text-align: center; font-family: monospace; background: #111; padding: 20px; border-radius: 10px; max-width: 540px; margin: 0 auto; color: #00ff00; }
   #score-board { font-size: 20px; margin-bottom: 10px; }
   canvas { border: 2px solid #00ff00; background-color: #000; display: block; margin: 0 auto; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
-  #controls { margin-top: 15px; display: none; }
-  #controls button { font-size: 24px; padding: 10px 20px; margin: 3px; background: #222; border: 1px solid #00ff00; color: #00ff00; border-radius: 5px; cursor: pointer; }
-  @media (max-width: 768px) { #controls { display: block; } }
+  
+  /* Контейнер управления на мобилках */
+  #controls-wrapper { margin-top: 20px; display: none; justify-content: center; }
+  
+  /* Сетка 3х3 для идеального крестика */
+  #controls { 
+    display: grid; 
+    grid-template-columns: repeat(3, 60px); 
+    grid-template-rows: repeat(3, 55px); 
+    gap: 5px; 
+    justify-content: center;
+  }
+  #controls button { 
+    font-size: 22px; 
+    background: #222; 
+    border: 1px solid #00ff00; 
+    color: #00ff00; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Раскладываем кнопки по координатам сетки */
+  .btn-up { grid-column: 2; grid-row: 1; }
+  .btn-left { grid-column: 1; grid-row: 2; }
+  .btn-down { grid-column: 2; grid-row: 2; }
+  .btn-right { grid-column: 3; grid-row: 2; }
+
+  @media (max-width: 768px) { #controls-wrapper { display: flex; } }
 </style>
 
 <script>
@@ -35,7 +64,7 @@ _Управление: стрелочки на клавиатуре или кн�
   const scoreElement = document.getElementById("score");
   const highScoreElement = document.getElementById("high-score");
 
-  const gridSize = 25; // Увеличили шаг сетки, чтобы на большем поле всё смотрелось соразмерно
+  const gridSize = 25; 
   const tileCount = canvas.width / gridSize;
   
   let snake = [{x: 10, y: 10}];
@@ -75,7 +104,6 @@ _Управление: стрелочки на клавиатуре или кн�
     let nextX = snake[0].x + dx;
     let nextY = snake[0].y + dy;
 
-    // ТЕЛЕПОРТАЦИЯ СКВОЗЬ СТЕНЫ: если выходим за границы, переносим на противоположную сторону
     if (nextX < 0) nextX = tileCount - 1;
     if (nextX >= tileCount) nextX = 0;
     if (nextY < 0) nextY = tileCount - 1;
@@ -121,7 +149,6 @@ _Управление: стрелочки на клавиатуре или кн�
 
   function checkGameOver() {
     const head = snake[0];
-    // Теперь врезаться можно только в свой собственный хвост
     for (let i = 1; i < snake.length; i++) {
       if (snake[i].x === head.x && snake[i].y === head.y) {
         alert("Игра окончена! Твой счёт: " + score);
@@ -140,7 +167,5 @@ _Управление: стрелочки на клавиатуре или кн�
   }
 
   document.addEventListener("keydown", changeDirection);
-  
-  // СКОРОСТЬ: Изменили интервал со 100 на 140 миллисекунд (игра станет более плавной и размеренной)
   setInterval(drawGame, 140);
 </script>
