@@ -63,6 +63,8 @@ _Каждый может отмечать галочками свои задач
 
 ---
 
+---
+
 ## 📓 Мои личные заметки к ДЗ
 _Этот блокнот персональный. Текст видишь только ты, и он автоматически сохраняется в твоём браузере!_
 
@@ -75,40 +77,50 @@ _Этот блокнот персональный. Текст видишь то�
 </div>
 
 <style>
+  /* Растягиваем контейнер на 100% ширины экрана, игнорируя ограничения темы */
   #personal-notebook-container {
-    width: 100% !important;
-    max-width: 640px;
-    margin: 15px auto !important;
-    box-sizing: border-box;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    padding: 0 20px !important; /* Небольшой отступ по краям дисплея, чтобы текст не прилипал к стеклу телефона */
+    box-sizing: border-box !important;
     text-align: left !important;
   }
+  
   #personal-notebook {
     width: 100% !important;
-    height: 150px !important;
+    height: 200px !important; /* Увеличили высоту для удобства */
     background: #1e1e1e !important;
     color: #00ff00 !important;
     border: 2px solid #00ff00 !important;
     border-radius: 8px !important;
-    padding: 12px !important;
+    padding: 15px !important;
     font-family: monospace !important;
-    font-size: 14px !important;
+    font-size: 15px !important;
     line-height: 1.5 !important;
-    resize: vertical !important;
+    resize: vertical !important; /* Можно растягивать только вниз */
     box-sizing: border-box !important;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.1);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
   }
+  
   #personal-notebook:focus {
     outline: none !important;
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3) !important;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3) !important;
   }
+  
   #notebook-status {
     font-size: 12px !important;
     color: #888888 !important;
-    margin-top: 5px !important;
+    margin-top: 6px !important;
+    margin-right: 25px !important; /* Выравнивание под правый край поля */
     font-style: italic !important;
     text-align: right !important;
     transition: opacity 0.3s ease;
-    opacity: 0; /* Прячется, когда пользователь не пишет */
+    opacity: 0;
   }
 </style>
 
@@ -124,7 +136,7 @@ _Этот блокнот персональный. Текст видишь то�
       notebook.value = savedText;
     }
 
-    // 2. Отслеживаем ввод текста и сохраняем с авто-дебаунсом (чтобы не спамить память)
+    // 2. Отслеживаем ввод текста и сохраняем локально
     notebook.addEventListener("input", function() {
       status.style.opacity = "0.5";
       status.innerText = "Печатает...";
@@ -135,13 +147,12 @@ _Этот блокнот персональный. Текст видишь то�
         status.innerText = "✓ Все изменения сохранены локально";
         status.style.opacity = "1";
         
-        // Плавно прячем надпись через 2 секунды после сохранения
         setTimeout(() => {
           if (status.innerText === "✓ Все изменения сохранены локально") {
             status.style.opacity = "0";
           }
         }, 2000);
-      }, 500); // Сохраняем через 500мс после того, как пользователь перестал нажимать клавиши
+      }, 500);
     });
   });
 </script>
