@@ -60,3 +60,88 @@ _Каждый может отмечать галочками свои задач
     });
   });
 </script>
+
+---
+
+## 📓 Мои личные заметки к ДЗ
+_Этот блокнот персональный. Текст видишь только ты, и он автоматически сохраняется в твоём браузере!_
+
+<div id="personal-notebook-container">
+  <textarea 
+    id="personal-notebook" 
+    placeholder="Впиши сюда свои дедлайны, номера задач по вариантам или ссылки на отчёты... Программа всё запомнит!"
+  ></textarea>
+  <div id="notebook-status">✓ Все изменения сохранены локально</div>
+</div>
+
+<style>
+  #personal-notebook-container {
+    width: 100% !important;
+    max-width: 640px;
+    margin: 15px auto !important;
+    box-sizing: border-box;
+    text-align: left !important;
+  }
+  #personal-notebook {
+    width: 100% !important;
+    height: 150px !important;
+    background: #1e1e1e !important;
+    color: #00ff00 !important;
+    border: 2px solid #00ff00 !important;
+    border-radius: 8px !important;
+    padding: 12px !important;
+    font-family: monospace !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    resize: vertical !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.1);
+  }
+  #personal-notebook:focus {
+    outline: none !important;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3) !important;
+  }
+  #notebook-status {
+    font-size: 12px !important;
+    color: #888888 !important;
+    margin-top: 5px !important;
+    font-style: italic !important;
+    text-align: right !important;
+    transition: opacity 0.3s ease;
+    opacity: 0; /* Прячется, когда пользователь не пишет */
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const notebook = document.getElementById("personal-notebook");
+    const status = document.getElementById("notebook-status");
+    let saveTimeout;
+
+    // 1. Загружаем сохраненный ранее текст
+    const savedText = localStorage.getItem("ib12-personal-notes");
+    if (savedText) {
+      notebook.value = savedText;
+    }
+
+    // 2. Отслеживаем ввод текста и сохраняем с авто-дебаунсом (чтобы не спамить память)
+    notebook.addEventListener("input", function() {
+      status.style.opacity = "0.5";
+      status.innerText = "Печатает...";
+
+      clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(function() {
+        localStorage.setItem("ib12-personal-notes", notebook.value);
+        status.innerText = "✓ Все изменения сохранены локально";
+        status.style.opacity = "1";
+        
+        // Плавно прячем надпись через 2 секунды после сохранения
+        setTimeout(() => {
+          if (status.innerText === "✓ Все изменения сохранены локально") {
+            status.style.opacity = "0";
+          }
+        }, 2000);
+      }, 500); // Сохраняем через 500мс после того, как пользователь перестал нажимать клавиши
+    });
+  });
+</script>
