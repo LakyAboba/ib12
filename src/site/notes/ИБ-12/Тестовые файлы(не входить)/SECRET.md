@@ -2,16 +2,4 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/secret/","dg-note-properties":{}}
 ---
 
-<div align="center">
-  <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="300" id="rickroll-gif" alt="Загрузка рикролла...">
-</div>
-
-<script>
-  // Хак: подгружаем гифку через JS после полной сборки страницы сайта
-  document.addEventListener("DOMContentLoaded", function() {
-    const img = document.getElementById("rickroll-gif");
-    if (img) {
-      img.src = "https://wikimedia.org";
-    }
-  });
-</script>
+![Рикролл](/img/user/%D0%98%D0%91-12/%D0%A2%D0%B5%D1%81%D1%82%D0%BE%D0%B2%D1%8B%D0%B5%20%D1%84%D0%B0%D0%B9%D0%BB%D1%8B(%D0%BD%D0%B5%20%D0%B2%D1%85%D0%BE%D0%B4%D0%B8%D1%82%D1%8C)/rick.gif)
