@@ -2,19 +2,19 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test2/","dg-note-properties":{}}
 ---
 
-# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.3
+# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.4
 
-_Управление: стрелочки на клавиатуре (на ПК) или крестовина на экране (на мобилках). Змейка умеет проходить сквозь стены!_
+_Управление: стрелочки на клавиатуре (на ПК) или удобная большая крестовина на экране (на телефонах)._
 
 <div id="game-container">
   <div id="score-board">Счёт: <span id="score">0</span> | Рекорд: <span id="high-score">0</span></div>
   
   <!-- Адаптивный контейнер для холста -->
   <div id="canvas-wrapper">
-    <canvas id="gameCanvas" width="500" height="500"></canvas>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
   </div>
   
-  <!-- Жесткая табличная крестовина (D-pad) для мобилок -->
+  <!-- Большая центрированная крестовина (D-pad) для мобилок -->
   <div id="controls-wrapper">
     <table id="dpad-table">
       <tr>
@@ -38,17 +38,17 @@ _Управление: стрелочки на клавиатуре (на ПК) 
     background: #111; 
     padding: 15px; 
     border-radius: 10px; 
-    max-width: 540px; 
+    max-width: 440px; 
     margin: 0 auto; 
     color: #00ff00;
     box-sizing: border-box;
   }
-  #score-board { font-size: 18px; margin-bottom: 10px; }
+  #score-board { font-size: 18px; margin-bottom: 12px; }
   
-  /* НА ПК: Холст фиксированный, большой (500px) */
+  /* НА ПК: Уменьшенный и аккуратный размер игрового поля (350x350px) */
   #canvas-wrapper {
-    width: 500px;
-    height: 500px;
+    width: 350px;
+    height: 350px;
     margin: 0 auto;
   }
   canvas { 
@@ -60,24 +60,22 @@ _Управление: стрелочки на клавиатуре (на ПК) 
     height: 100%;
   }
   
-  /* НА ПК: Кнопки полностью скрыты */
+  /* НА ПК: Кнопки гарантированно и полностью скрыты */
   #controls-wrapper { 
-    display: none; 
-    margin-top: 20px;
-    width: 100%;
+    display: none !important; 
   }
 
-  /* Стили абсолютно жесткой таблицы-крестовины */
+  /* Стили большой и отцентрированной таблицы-крестовины */
   #dpad-table {
-    margin: 0 auto !important;
+    margin: 0 auto !important; /* Центрирование таблицы по горизонтали */
     border-collapse: collapse !important;
     border: none !important;
     background: transparent !important;
   }
   #dpad-table td {
-    width: 60px !important;
-    height: 55px !important;
-    padding: 3px !important;
+    width: 75px !important;  /* Увеличили ширину ячейки кнопки */
+    height: 70px !important; /* Увеличили высоту ячейки кнопки */
+    padding: 4px !important;
     border: none !important;
     text-align: center !important;
     vertical-align: middle !important;
@@ -86,19 +84,27 @@ _Управление: стрелочки на клавиатуре (на ПК) 
   .dpad-btn { 
     width: 100% !important;
     height: 100% !important;
-    font-size: 22px !important; 
+    font-size: 26px !important; /* Сделали эмодзи стрелочек крупнее */
     background: #222 !important; 
-    border: 1px solid #00ff00 !important; 
+    border: 2px solid #00ff00 !important; 
     color: #00ff00 !important; 
-    border-radius: 8px !important; 
+    border-radius: 12px !important; /* Более плавные скруглённые углы */
     cursor: pointer !important; 
     padding: 0 !important;
     margin: 0 !important;
     box-sizing: border-box !important;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.5);
+  }
+  .dpad-btn:active {
+    background: #00ff00 !important;
+    color: #000 !important;
   }
 
-  /* НА СМАРТФОНАХ: Включаем адаптивное сжатие поля и показываем крестовину */
+  /* НА СМАРТФОНАХ: Включаем адаптивное сжатие поля под экран и активируем центрированный D-pad */
   @media (max-width: 768px) { 
+    #game-container {
+      max-width: 100%;
+    }
     #canvas-wrapper {
       width: 100% !important;
       height: auto !important;
@@ -108,7 +114,9 @@ _Управление: стрелочки на клавиатуре (на ПК) 
       height: auto !important;
     }
     #controls-wrapper { 
-      display: block !important; 
+      display: block !important; /* Показываем блок управления на мобилках */
+      text-align: center !important;
+      margin-top: 25px !important;
     } 
   }
 </style>
@@ -119,7 +127,7 @@ _Управление: стрелочки на клавиатуре (на ПК) 
   const scoreElement = document.getElementById("score");
   const highScoreElement = document.getElementById("high-score");
 
-  const gridSize = 25; 
+  const gridSize = 20; // Оптимальный шаг сетки для разрешения 400x400
   const tileCount = canvas.width / gridSize;
   
   let snake = [{x: 10, y: 10}];
