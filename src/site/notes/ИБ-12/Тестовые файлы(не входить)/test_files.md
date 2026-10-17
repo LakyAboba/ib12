@@ -89,7 +89,7 @@ _Этот блокнот персональный. Текст видишь то�
   }
   
   #personal-notebook {
-    width: 100% !important;      /* Изначально растягивается во всю ширь статьи */
+    width: 400% !important;      /* Изначально растягивается во всю ширь статьи */
     height: 200px !important; 
     background: #1e1e1e !important;
     color: #00ff00 !important;
