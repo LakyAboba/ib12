@@ -2,7 +2,7 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test3/","dg-note-properties":{}}
 ---
 
-# 🕹️ Перерыв на ИБ-12 | Терминальный Тетрис v2.2
+# 🕹️ Перерыв на ИБ-12 | Терминальный Тетрис v2.3
 
 _Управление на ПК: Стрелочки (Влево/Вправо — движение, Вверх — поворот, Вниз — ускорить падение), Пробел — мгновенный сброс._
 
@@ -92,7 +92,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     display: none !important; 
   }
 
-  /* НА СМАРТФОНАХ: Подтягиваем джойстик наверх */
+  /* НА СМАРТФОНАХ: Подтягиваем джойстик наверх вплотную к полю */
   @media (max-width: 768px) { 
     #game-container {
       width: 100% !important;
@@ -111,7 +111,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
       display: flex !important; 
       flex-direction: column !important;
       align-items: center !important;
-      margin-top: 5px !important; 
+      margin: 2px auto 0 auto !important; /* Убран лишний отступ сверху */
       width: 100% !important;
       max-height: 240px !important; 
     } 
@@ -207,7 +207,6 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     return matrix;
   }
 
-  /* 🛡️ КРИПТО-МАТРИЦЫ: Обычные текстовые строки, Quartz не сможет залезть внутрь и вырезать скобки! */
   function createPiece(type) {
     let s = '';
     if (type === 'T') s = '0,1,0|1,1,1|0,0,0';
@@ -287,6 +286,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     const pieces = 'ILJOTSZ';
     player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
     player.pos.y = 0;
+    /* ИСПРАВЛЕНО: расчет по X заменен с арены по вертикали на арену по горизонтали [0].length */
     player.pos.x = Math.floor(arena[0].length / 2) - Math.floor(player.matrix[0].length / 2);
     
     if (collide(arena, player)) {
@@ -306,7 +306,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     while (collide(arena, player)) {
       player.pos.x += offset;
       offset = -(offset + (offset > 0 ? 1 : -1));
-      if (offset > player.matrix[0].length) {
+      if (offset > player.matrix.length) {
         rotate(player.matrix, -dir);
         player.pos.x = pos;
         return;
@@ -361,6 +361,3 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     if (code === 32) playerHardDrop();
   }
 
-  let score = 0;
-  let lines = 0;
-  playerReset();
