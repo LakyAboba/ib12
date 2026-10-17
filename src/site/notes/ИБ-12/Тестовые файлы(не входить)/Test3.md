@@ -2,7 +2,7 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test3/","dg-note-properties":{}}
 ---
 
-# 🕹️ Перерыв на ИБ-12 | Терминальный Тетрис v1.5
+# 🕹️ Перерыв на ИБ-12 | Терминальный Тетрис v1.6
 
 _Управление на ПК: Стрелочки (Влево/Вправо — движение, Вверх — поворот, Вниз — ускорить падение), Пробел — мгновенный сброс._
 
@@ -86,7 +86,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     display: none !important; 
   }
 
-  /* НА СМАРТФОНАХ: Поджимаем Canvas и выводим кнопки */
+  /* НА СМАРТФОНАХ */
   @media (max-width: 768px) { 
     #game-container {
       width: 100% !important;
@@ -176,14 +176,17 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
   }
 
   function collide(arena, player) {
-    const [m, o] = [player.matrix, player.pos];
+    const m = player.matrix;
+    const o = player.pos;
     for (let y = 0; y < m.length; ++y) {
       for (let x = 0; x < m[y].length; ++x) {
-        if (m[y][x] !== 0 &&
-           (arena[y + o.y] === undefined ||
-            arena[y + o.y][x + o.x] === undefined ||
-            arena[y + o.y][x + o.x] !== 0)) {
-          return true;
+        if (m[y][x] !== 0) {
+          // Проверка выхода за нижнюю границу или столкновения с блоками
+          if (arena[y + o.y] === undefined || 
+              arena[y + o.y][x + o.x] === undefined || 
+              arena[y + o.y][x + o.x] !== 0) {
+            return true;
+          }
         }
       }
     }
@@ -198,15 +201,15 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     return matrix;
   }
 
-  /* ЖЕСТКИЕ МАТРИЦЫ БЕЗ ПРОПУСКОВ И ЗАПЯТЫХ: Кварц теперь точно бессилен сломать код! */
+  // ЗАЩИТА ОТ КВАРЦА: Передаем фигуры строками, парсим через JSON!
   function createPiece(type) {
-    if (type === 'T') return [[0,1,0],[1,1,1],[0,0,0]];
-    if (type === 'O') return [[2,2],[2,2]];
-    if (type === 'L') return [[0,0,3],[3,3,3],[0,0,0]];
-    if (type === 'J') return [[4,0,0],[4,4,4],[0,0,0]];
-    if (type === 'I') return [[0,0,0,0],[5,5,5,5],[0,0,0,0],[0,0,0,0]];
-    if (type === 'S') return [[0,6,6],[6,6,0],[0,0,0]];
-    if (type === 'Z') return [[7,7,0],[0,7,7],[0,0,0]];
+    if (type === 'T') return JSON.parse("[[0,1,0],[1,1,1],[0,0,0]]");
+    if (type === 'O') return JSON.parse("[[2,2],[2,2]]");
+    if (type === 'L') return JSON.parse("[[0,0,3],[3,3,3],[0,0,0]]");
+    if (type === 'J') return JSON.parse("[[4,0,0],[4,4,4],[0,0,0]]");
+    if (type === 'I') return JSON.parse("[[0,0,0,0],[5,5,5,5],[0,0,0,0],[0,0,0,0]]");
+    if (type === 'S') return JSON.parse("[[0,6,6],[6,6,0],[0,0,0]]");
+    if (type === 'Z') return JSON.parse("[[7,7,0],[0,7,7],[0,0,0]]");
   }
 
   function draw() {
@@ -219,6 +222,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
   const colors = [null, '#00ff00', '#00ee00', '#00dd00', '#00cc00', '#00bb00', '#00aa00', '#009900'];
 
   function drawMatrix(matrix, offset) {
+    if (!matrix) return;
     matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
@@ -277,6 +281,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     player.pos.y = 0;
     player.pos.x = Math.floor(arena[0].length / 2) - Math.floor(player.matrix[0].length / 2);
     
+    // Если сразу при спавне столкновение — Game Over
     if (collide(arena, player)) {
       alert('Игра окончена! Счёт: ' + score);
       arena.forEach(row => row.fill(0));
