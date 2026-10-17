@@ -2,13 +2,14 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test2/","dg-note-properties":{}}
 ---
 
-# 🎮 Перерыв для ИБ-12 | Ретро-Змейка
+# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.0
 
-_Управление: стрелочки на клавиатуре или кнопки на экране (для телефонов)._
+_Управление: стрелочки на клавиатуре или кнопки на экране (для мобилок). Змейка теперь умеет проходить сквозь стены!_
 
 <div id="game-container">
   <div id="score-board">Счёт: <span id="score">0</span> | Рекорд: <span id="high-score">0</span></div>
-  <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <!-- Размер поля увеличен до 500x500 -->
+  <canvas id="gameCanvas" width="500" height="500"></canvas>
   
   <!-- Кнопки для игры с телефона -->
   <div id="controls">
@@ -20,12 +21,11 @@ _Управление: стрелочки на клавиатуре или кн�
 </div>
 
 <style>
-  #game-container { text-align: center; font-family: monospace; background: #111; padding: 20px; border-radius: 10px; max-width: 440px; margin: 0 auto; color: #00ff00; }
+  #game-container { text-align: center; font-family: monospace; background: #111; padding: 20px; border-radius: 10px; max-width: 540px; margin: 0 auto; color: #00ff00; }
   #score-board { font-size: 20px; margin-bottom: 10px; }
   canvas { border: 2px solid #00ff00; background-color: #000; display: block; margin: 0 auto; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
   #controls { margin-top: 15px; display: none; }
   #controls button { font-size: 24px; padding: 10px 20px; margin: 3px; background: #222; border: 1px solid #00ff00; color: #00ff00; border-radius: 5px; cursor: pointer; }
-  /* Включаем кнопки управления только на мобилках */
   @media (max-width: 768px) { #controls { display: block; } }
 </style>
 
@@ -35,7 +35,7 @@ _Управление: стрелочки на клавиатуре или кн�
   const scoreElement = document.getElementById("score");
   const highScoreElement = document.getElementById("high-score");
 
-  const gridSize = 20;
+  const gridSize = 25; // Увеличили шаг сетки, чтобы на большем поле всё смотрелось соразмерно
   const tileCount = canvas.width / gridSize;
   
   let snake = [{x: 10, y: 10}];
@@ -60,9 +60,7 @@ _Управление: стрелочки на клавиатуре или кн�
   }
 
   function drawSnake() {
-    ctx.fillStyle = "#00ff00";
     snake.forEach((part, index) => {
-      // Голова змейки чуть темнее
       ctx.fillStyle = index === 0 ? "#00cc00" : "#00ff00";
       ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize - 2, gridSize - 2);
     });
@@ -74,7 +72,16 @@ _Управление: стрелочки на клавиатуре или кн�
   }
 
   function moveSnake() {
-    const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+    let nextX = snake[0].x + dx;
+    let nextY = snake[0].y + dy;
+
+    // ТЕЛЕПОРТАЦИЯ СКВОЗЬ СТЕНЫ: если выходим за границы, переносим на противоположную сторону
+    if (nextX < 0) nextX = tileCount - 1;
+    if (nextX >= tileCount) nextX = 0;
+    if (nextY < 0) nextY = tileCount - 1;
+    if (nextY >= tileCount) nextY = 0;
+
+    const head = {x: nextX, y: nextY};
     snake.unshift(head);
 
     if (head.x === food.x && head.y === food.y) {
@@ -94,7 +101,6 @@ _Управление: стрелочки на клавиатуре или кн�
   function generateFood() {
     food.x = Math.floor(Math.random() * tileCount);
     food.y = Math.floor(Math.random() * tileCount);
-    // Проверка, чтобы еда не спавнилась на змейке
     if (snake.some(part => part.x === food.x && part.y === food.y)) {
       generateFood();
     }
@@ -115,19 +121,12 @@ _Управление: стрелочки на клавиатуре или кн�
 
   function checkGameOver() {
     const head = snake[0];
-    const hitLeftWall = head.x < 0;
-    const hitRightWall = head.x >= tileCount;
-    const hitToptWall = head.y < 0;
-    const hitBottomWall = head.y >= tileCount;
-
-    let hitSelf = false;
+    // Теперь врезаться можно только в свой собственный хвост
     for (let i = 1; i < snake.length; i++) {
-      if (snake[i].x === head.x && snake[i].y === head.y) hitSelf = true;
-    }
-
-    if (hitLeftWall || hitRightWall || hitToptWall || hitBottomWall || hitSelf) {
-      alert("Игра окончена! Твой счёт: " + score);
-      resetGame();
+      if (snake[i].x === head.x && snake[i].y === head.y) {
+        alert("Игра окончена! Твой счёт: " + score);
+        resetGame();
+      }
     }
   }
 
@@ -141,5 +140,7 @@ _Управление: стрелочки на клавиатуре или кн�
   }
 
   document.addEventListener("keydown", changeDirection);
-  setInterval(drawGame, 100);
+  
+  // СКОРОСТЬ: Изменили интервал со 100 на 140 миллисекунд (игра станет более плавной и размеренной)
+  setInterval(drawGame, 140);
 </script>
