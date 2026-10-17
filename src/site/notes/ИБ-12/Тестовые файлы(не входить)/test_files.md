@@ -64,7 +64,6 @@ _Каждый может отмечать галочками свои задач
 ---
 
 ---
-
 ---
 
 ## 📓 Мои личные заметки к ДЗ
@@ -79,20 +78,18 @@ _Этот блокнот персональный. Текст видишь то�
 </div>
 
 <style>
-  /* Жестко выбиваем контейнер на 100% ширины видимого окна устройства */
+  /* Возвращаем поле в нормальный адаптивный масштаб контента сайта */
   #personal-notebook-container {
-    width: calc(100vw - 30px) !important; /* Автоматический расчет полной ширины с учетом зазоров */
-    max-width: 100vw !important;
-    position: relative !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important; /* Идеальное центрирование относительно краев экрана */
+    width: 100% !important;      /* Занимает всю ширину контента, не ломая масштаб страницы */
+    max-width: 100% !important;
     margin: 15px 0 !important;
     box-sizing: border-box !important;
     text-align: left !important;
+    display: block !important;
   }
   
   #personal-notebook {
-    width: 100% !important; /* Изначально занимает всю ширину контейнера */
+    width: 100% !important;      /* Изначально растягивается во всю ширь статьи */
     height: 200px !important; 
     background: #1e1e1e !important;
     color: #00ff00 !important;
@@ -102,7 +99,7 @@ _Этот блокнот персональный. Текст видишь то�
     font-family: monospace !important;
     font-size: 15px !important;
     line-height: 1.5 !important;
-    resize: vertical !important; /* Возможность ручного растягивания вниз сохранена */
+    resize: vertical !important; /* Безопасное ручное растягивание только по вертикали */
     box-sizing: border-box !important;
     box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
   }
@@ -155,3 +152,5 @@ _Этот блокнот персональный. Текст видишь то�
     });
   });
 </script>
+
+
