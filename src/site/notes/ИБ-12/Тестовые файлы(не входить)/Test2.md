@@ -2,22 +2,22 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test2/","dg-note-properties":{}}
 ---
 
-# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.5
+# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.7
 
-_Управление: стрелочки на клавиатуре (на ПК) или гигантская центрированная крестовина (на телефонах)._
+_Управление: стрелочки на клавиатуре (на ПК) или супер-гигантская крестовина (на телефонах)._
 
-<!-- Центрирующий внешний контейнер -->
-<div align="center" style="width: 100%; text-align: center !important;">
+<!-- Фиксированный центрирующий контейнер -->
+<div align="center" style="width: 100%; text-align: center !important; margin: 0 auto !important;">
 
   <div id="game-container">
     <div id="score-board">Счёт: <span id="score">0</span> | Рекорд: <span id="high-score">0</span></div>
     
-    <!-- Компактный контейнер для ПК (280px) и адаптивный для мобилок -->
+    <!-- Контейнер холста с жестким ограничением размеров -->
     <div id="canvas-wrapper">
       <canvas id="gameCanvas" width="400" height="400"></canvas>
     </div>
     
-    <!-- Огромная крестовина, выровненная по центру через HTML-атрибут -->
+    <!-- Супер-гигантская крестовина управления, прижатая к полю -->
     <div id="controls-wrapper" align="center">
       <table id="dpad-table" align="center">
         <tr>
@@ -41,37 +41,39 @@ _Управление: стрелочки на клавиатуре (на ПК) 
     text-align: center !important; 
     font-family: monospace; 
     background: #111; 
-    padding: 12px; 
+    padding: 8px !important; 
     border-radius: 10px; 
-    max-width: 320px; /* Сузили общий контейнер для ПК */
+    max-width: 216px; /* Жестко ограничили ширину контейнера под размер поля на ПК */
     margin: 0 auto !important; 
     color: #00ff00;
-    box-sizing: border-box;
+    box-sizing: border-box !important;
     display: block;
   }
-  #score-board { font-size: 16px; margin-bottom: 8px; }
+  #score-board { font-size: 13px; margin-bottom: 5px; }
   
-  /* НА ПК: Идеальный мини-масштаб игрового поля (280x280px) */
+  /* НА ПК: Мини-масштаб холста (200x240px с рамкой), поле сжато и видно целиком */
   #canvas-wrapper {
-    width: 280px !important;
-    height: 280px !important;
+    width: 200px !important;
+    height: 200px !important;
     margin: 0 auto !important;
+    box-sizing: border-box !important;
   }
   canvas { 
-    border: 2px solid #00ff00; 
-    background-color: #000; 
-    box-shadow: 0 0 12px rgba(0, 255, 0, 0.3);
-    display: block;
-    width: 100% !important;
-    height: 100% !important;
+    border: 2px solid #00ff00 !important; 
+    background-color: #000 !important; 
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+    display: block !important;
+    width: 100% !important;   /* Масштабируем внутреннюю графику 400x400 */
+    height: 100% !important;  /* под внешние пиксельные размеры */
+    box-sizing: border-box !important;
   }
   
-  /* НА ПК: Кнопки гарантированно вырезаны */
+  /* НА ПК: Полностью вырезаем блок кнопок */
   #controls-wrapper { 
     display: none !important; 
   }
 
-  /* Жесткие стили ГИГАНТСКОЙ таблицы-крестовины */
+  /* Стили СУПЕР-ГИГАНТСКОЙ крестовины, максимально поднятой вверх */
   #dpad-table {
     margin: 0 auto !important;
     border-collapse: collapse !important;
@@ -79,9 +81,9 @@ _Управление: стрелочки на клавиатуре (на ПК) 
     background: transparent !important;
   }
   #dpad-table td {
-    width: 90px !important;  /* Огромная ширина под пальцы */
-    height: 80px !important; /* Огромная высота под пальцы */
-    padding: 5px !important;
+    width: 115px !important;  /* Сверх-большая ширина для пальцев */
+    height: 100px !important; /* Сверх-большая высота для пальцев */
+    padding: 2px !important;  /* Минимальные зазоры между кнопками */
     border: none !important;
     text-align: center !important;
     vertical-align: middle !important;
@@ -90,37 +92,37 @@ _Управление: стрелочки на клавиатуре (на ПК) 
   .dpad-btn { 
     width: 100% !important;
     height: 100% !important;
-    font-size: 32px !important; /* Укрупненные стрелочки */
+    font-size: 42px !important; /* Огромные стрелки-эмодзи */
     background: #222 !important; 
     border: 2px solid #00ff00 !important; 
     color: #00ff00 !important; 
-    border-radius: 14px !important; 
+    border-radius: 18px !important; 
     cursor: pointer !important; 
     padding: 0 !important;
     margin: 0 !important;
     box-sizing: border-box !important;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.6);
   }
   .dpad-btn:active {
     background: #00ff00 !important;
     color: #000 !important;
   }
 
-  /* НА СМАРТФОНАХ: Разворачиваем поле на максимум и включаем центрированный D-pad */
+  /* НА ТЕЛЕФОНАХ: Разворачиваем игру и убираем лишние отступы */
   @media (max-width: 768px) { 
     #game-container {
       max-width: 100% !important;
-      padding: 10px;
+      padding: 6px !important;
     }
     #canvas-wrapper {
       width: 100% !important;
       height: auto !important;
-      max-width: 340px; /* Ограничение, чтобы поле не уходило вниз экрана телефона */
+      max-width: 310px; 
     }
     #controls-wrapper { 
       display: block !important; 
       visibility: visible !important;
-      margin: 20px auto 0 auto !important;
+      margin: 5px auto 0 auto !important; /* Практически вплотную прижали джойстик к полю */
       width: 100% !important;
       text-align: center !important;
     } 
