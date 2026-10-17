@@ -2,7 +2,7 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test3/","dg-note-properties":{}}
 ---
 
-# 🕹️ Перерыв на ИБ-12 | Терминальный Тетрис v1.2
+# 🕹️ Перерыв на ИБ-12 | Терминальный Тетрис v1.4
 
 _Управление на ПК: Стрелочки (Влево/Вправо — движение, Вверх — поворот, Вниз — ускорить падение), Пробел — мгновенный сброс._
 
@@ -86,7 +86,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     display: none !important; 
   }
 
-  /* НА СМАРТФОНАХ: Поджимаем Canvas и выводим кнопки */
+  /* НА СМАРТФОНАХ */
   @media (max-width: 768px) { 
     #game-container {
       width: 100% !important;
@@ -95,7 +95,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     #canvas-wrapper {
       width: 100% !important;
       height: auto !important;
-      max-width: 180px !important; /* Делаем поле чуть компактнее на мобилках */
+      max-width: 180px !important; 
     }
     canvas {
       width: 100% !important;
@@ -118,8 +118,8 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     padding: 0 !important;
   }
   .dpad-btn, .dpad-empty {
-    width: 110px !important;  
-    height: 90px !important; /* Увеличили высоту */
+    width: 105px !important;  
+    height: 90px !important; 
     box-sizing: border-box !important;
     margin: 2px !important;
   }
@@ -180,8 +180,9 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     for (let y = 0; y < m.length; ++y) {
       for (let x = 0; x < m[y].length; ++x) {
         if (m[y][x] !== 0 &&
-           (arena[y + o.y] &&
-            arena[y + o.y][x + o.x]) !== 0) {
+           (arena[y + o.y] === undefined ||
+            arena[y + o.y][x + o.x] === undefined ||
+            arena[y + o.y][x + o.x] !== 0)) {
           return true;
         }
       }
@@ -197,15 +198,15 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     return matrix;
   }
 
-  /* ЖЕСТКАЯ ОДНОСТРОЧНАЯ ЗАПИСЬ: Роботы Quartz её больше не порежут! */
+  /* НАСТОЯЩИЕ ЦИФРОВЫЕ МАТРИЦЫ: Полная физичность и осязаемость блоков */
   function createPiece(type) {
-    if (type === 'T') return [[0,0,0],[1,1,1],[0,1,0]];
-    if (type === 'O') return [[2,2],[2,2]];
-    if (type === 'L') return [[0,0,3],[3,3,3],[0,0,0]];
-    if (type === 'J') return [[4,0,0],[4,4,4],[0,0,0]];
-    if (type === 'I') return [[0,0,0,0],[5,5,5,5],[0,0,0,0],[0,0,0,0]];
-    if (type === 'S') return [[0,6,6],[6,6,0],[0,0,0]];
-    if (type === 'Z') return [[7,7,0],[0,7,7],[0,0,0]];
+    if (type === 'T') return [[0, 1, 0], [1, 1, 1], [0, 0, 0]];
+    if (type === 'O') return [[2, 2], [2, 2]];
+    if (type === 'L') return [[0, 0, 3], [3, 3, 3], [0, 0, 0]];
+    if (type === 'J') return [[4, 0, 0], [4, 4, 4], [0, 0, 0]];
+    if (type === 'I') return [[0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0]];
+    if (type === 'S') return [[0, 6, 6], [6, 6, 0], [0, 0, 0]];
+    if (type === 'Z') return [[7, 7, 0], [0, 7, 7], [0, 0, 0]];
   }
 
   function draw() {
@@ -274,7 +275,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     const pieces = 'ILJOTSZ';
     player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
     player.pos.y = 0;
-    player.pos.x = (arena[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
+    player.pos.x = Math.floor(arena[0].length / 2) - Math.floor(player.matrix[0].length / 2);
     
     if (collide(arena, player)) {
       alert('Игра окончена! Счёт: ' + score);
