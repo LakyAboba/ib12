@@ -2,7 +2,7 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test3/","dg-note-properties":{}}
 ---
 
-# 🕹️ Перерыв на ИБ-12 | Терминальный Тетрис v1.0
+# 🕹️ Перерыв на ИБ-12 | Терминальный Тетрис v1.1
 
 _Управление на ПК: Стрелочки (Влево/Вправо — движение, Вверх — поворот, Вниз — ускорить падение), Пробел — мгновенный сброс._
 
@@ -14,19 +14,19 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
       <canvas id="tetrisCanvas" width="240" height="400"></canvas>
     </div>
     
-    <!-- Гигантская крестовина для телефонов -->
+    <!-- Компактный D-pad на Блочных Дивах (Защита от сброса в один ряд) -->
     <div id="controls-wrapper">
       <div class="dpad-row">
         <div class="dpad-empty"></div>
-        <button class="dpad-btn" onclick="handleDpad(38)">🔄</button> <!-- Поворот -->
+        <button class="dpad-btn" onclick="handleDpad(38)">🔄</button>
         <div class="dpad-empty"></div>
       </div>
       <div class="dpad-row">
         <button class="dpad-btn" onclick="handleDpad(37)">◀️</button>
         <button class="dpad-btn" onclick="handleDpad(40)">🔽</button>
-        <button class="dpad-btn" onclick="handleDpad(39)">▶️</button>
+        <button class="dpad-btn" onclick="changeDirectionAndDrop(39)">▶️</button>
       </div>
-      <div class="dpad-row" style="margin-top: 4px !important;">
+      <div class="dpad-row" style="margin-top: 5px !important;">
         <button class="dpad-btn drop-btn" onclick="handleDpad(32)">💥 МГНОВЕННЫЙ СБРОС 💥</button>
       </div>
     </div>
@@ -96,7 +96,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     #canvas-wrapper {
       width: 100% !important;
       height: auto !important;
-      max-width: 220px !important; /* Чуть сужаем на мобилках, чтобы влез джойстик */
+      max-width: 200px !important; /* Сужаем на мобилках под джойстик */
     }
     canvas {
       width: 100% !important;
@@ -111,7 +111,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     } 
   }
 
-  /* Стили крестовины */
+  /* Стили крестовины на Блочных Дивах */
   .dpad-row {
     display: flex !important;
     justify-content: center !important;
@@ -120,13 +120,13 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     padding: 0 !important;
   }
   .dpad-btn, .dpad-empty {
-    width: 110px !important;  
+    width: 105px !important;  
     height: 85px !important;
     box-sizing: border-box !important;
     margin: 2px !important;
   }
   .drop-btn {
-    width: 334px !important;
+    width: 324px !important;
     height: 50px !important;
     font-size: 14px !important;
     font-weight: bold !important;
@@ -155,10 +155,8 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
   const scoreElement = document.getElementById('score');
   const linesElement = document.getElementById('lines');
 
-  // Масштаб (240x400 при сетке 10x20 дает размер блока 24px)
   context.scale(24, 24);
 
-  // Очистка заполненных линий
   function arenaSweep() {
     let rowCount = 1;
     outer: for (let y = arena.length - 1; y > 0; --y) {
@@ -167,7 +165,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
           continue outer;
         }
       }
-      const row = arena.splice(y, 1)[0].fill(0);
+      const row = arena.splice(y, 1).fill(0)[0];
       arena.unshift(row);
       ++y;
 
@@ -179,7 +177,6 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     linesElement.innerText = lines;
   }
 
-  // Проверка столкновений
   function collide(arena, player) {
     const [m, o] = [player.matrix, player.pos];
     for (let y = 0; y < m.length; ++y) {
@@ -194,7 +191,6 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     return false;
   }
 
-  // Создание матрицы поля
   function createMatrix(w, h) {
     const matrix = [];
     while (h--) {
@@ -203,26 +199,46 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     return matrix;
   }
 
-  // Создание фигур
+  /* ИСПРАВЛЕНО: Матрицы фигур теперь полностью заполнены числами-индексами цветов */
   function createPiece(type) {
     if (type === 'T') {
-      return [[0, 0, 0], [1, 1, 1], [0, 1, 0\|0, 0, 0], [1, 1, 1], [0, 1, 0]];
+      return [,
+ ,
+ ,
+      ];
     } else if (type === 'O') {
-      return [[2, 2], [2, 2\|2, 2], [2, 2]];
+      return [,
+ ,
+      ];
     } else if (type === 'L') {
-      return [[0, 3, 0], [0, 3, 0], [0, 3, 3\|0, 3, 0], [0, 3, 0], [0, 3, 3]];
+      return [,
+ ,
+ ,
+      ];
     } else if (type === 'J') {
-      return [[0, 4, 0], [0, 4, 0], [4, 4, 0\|0, 4, 0], [0, 4, 0], [4, 4, 0]];
+      return [,
+ ,
+ ,
+      ];
     } else if (type === 'I') {
-      return [[0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0\|0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0]];
+      return [,
+ ,
+ ,
+ ,
+      ];
     } else if (type === 'S') {
-      return [[0, 6, 6], [6, 6, 0], [0, 0, 0\|0, 6, 6], [6, 6, 0], [0, 0, 0]];
+      return [,
+ ,
+ ,
+      ];
     } else if (type === 'Z') {
-      return [[7, 7, 0], [0, 7, 7], [0, 0, 0\|7, 7, 0], [0, 7, 7], [0, 0, 0]];
+      return [,
+ ,
+ ,
+      ];
     }
   }
 
-  // Отрисовка
   function draw() {
     context.fillStyle = '#000';
     context.fillRect(0, 0, canvas.width, canvas.height);
@@ -231,16 +247,15 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     drawMatrix(player.matrix, player.pos);
   }
 
-  // Цвета терминального стиля
   const colors = [
     null,
-    '#00ff00', // T
-    '#00ee00', // O
-    '#00dd00', // L
-    '#00cc00', // J
-    '#00bb00', // I
-    '#00aa00', // S
-    '#009900', // Z
+    '#00ff00', 
+    '#00ee00', 
+    '#00dd00', 
+    '#00cc00', 
+    '#00bb00', 
+    '#00aa00', 
+    '#009900', 
   ];
 
   function drawMatrix(matrix, offset) {
@@ -249,7 +264,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
         if (value !== 0) {
           context.fillStyle = colors[value];
           context.fillRect(x + offset.x, y + offset.y, 1, 1);
-          context.strokeStyle = '#111'; // Сетка
+          context.strokeStyle = '#111'; 
           context.lineWidth = 0.05;
           context.strokeRect(x + offset.x, y + offset.y, 1, 1);
         }
@@ -257,7 +272,6 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     });
   }
 
-  // Слияние фигуры с ареной
   function merge(arena, player) {
     player.matrix.forEach((row, y) => {
       row.forEach((value, x) => {
@@ -268,7 +282,6 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     });
   }
 
-  // Сдвиг вниз
   function playerDrop() {
     player.pos.y++;
     if (collide(arena, player)) {
@@ -280,7 +293,6 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     dropCounter = 0;
   }
 
-  // Мгновенный сброс (Пробел)
   function playerHardDrop() {
     while (!collide(arena, player)) {
       player.pos.y++;
@@ -292,7 +304,6 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     dropCounter = 0;
   }
 
-  // Движение по горизонтали
   function playerMove(dir) {
     player.pos.x += dir;
     if (collide(arena, player)) {
@@ -300,7 +311,6 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     }
   }
 
-  // Генерация новой фигуры
   function playerReset() {
     const pieces = 'ILJOTSZ';
     player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
@@ -308,7 +318,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     player.pos.x = (arena[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
     
     if (collide(arena, player)) {
-      alert('Игра окончена! Ваша магия ИБ иссякла. Счёт: ' + score);
+      alert('Игра окончена! Счёт: ' + score);
       arena.forEach(row => row.fill(0));
       score = 0;
       lines = 0;
@@ -317,7 +327,6 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     }
   }
 
-  // Поворот фигуры
   function playerRotate(dir) {
     const pos = player.pos.x;
     let offset = 1;
@@ -347,7 +356,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
   }
 
   let dropCounter = 0;
-  let dropInterval = 1000; // Скорость падения фигур (1 секунда)
+  let dropInterval = 1000; 
   let lastTime = 0;
 
   function update(time = 0) {
@@ -369,9 +378,14 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     matrix: null,
   };
 
-  // Обработка клавиатуры ПК
   document.addEventListener('keydown', event => {
     if (event.keyCode === 37) playerMove(-1);
     else if (event.keyCode === 39) playerMove(1);
     else if (event.keyCode === 40) playerDrop();
     else if (event.keyCode === 38) playerRotate(1);
+    else if (event.keyCode === 32) playerHardDrop();
+  });
+
+  function handleDpad(code) {
+    if (code === 37) playerMove(-1);
+    if (code === 39) playerMove(1);
