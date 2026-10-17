@@ -2,11 +2,12 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test3/","dg-note-properties":{}}
 ---
 
-# 🕹️ Перерыв на ИБ-12 | Терминальный Тетрис v1.7
+# 🕹️ Перерыв на ИБ-12 | Терминальный Тетрис v1.8
 
 _Управление на ПК: Стрелочки (Влево/Вправо — движение, Вверх — поворот, Вниз — ускорить падение), Пробел — мгновенный сброс._
 
-<div id="game-super-wrapper">
+<!-- Изолированный супер-враппер для центрирования и сжатия отступов -->
+<div id="tetris-super-wrapper">
   <div id="game-container">
     <div id="score-board">Счёт: <span id="score">0</span> | Линии: <span id="lines">0</span></div>
     
@@ -26,7 +27,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
         <button class="dpad-btn" onclick="handleDpad(40)">🔽</button>
         <button class="dpad-btn" onclick="handleDpad(39)">▶️</button>
       </div>
-      <div class="dpad-row" style="margin-top: 5px !important;">
+      <div class="dpad-row" style="margin-top: 3px !important;">
         <button class="dpad-btn drop-btn" onclick="handleDpad(32)">💥 МГНОВЕННЫЙ СБРОС 💥</button>
       </div>
     </div>
@@ -42,7 +43,8 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     }
   }
 
-  #game-super-wrapper {
+  /* Полное принудительное центрирование и схлопывание внешних параграфов */
+  #tetris-super-wrapper {
     width: 100% !important;
     display: flex !important;
     justify-content: center !important;
@@ -50,10 +52,15 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     padding: 0 !important;
     margin: 0 auto !important;
   }
+  #tetris-super-wrapper p, #tetris-super-wrapper div {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
   #game-container { 
     font-family: monospace; 
     background: #111 !important; 
-    padding: 10px !important; 
+    padding: 8px !important; 
     border-radius: 10px !important; 
     width: 260px !important; 
     max-width: 260px !important;
@@ -63,7 +70,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     align-items: center !important;
     margin-top: 10px !important;
   }
-  #score-board { font-size: 14px !important; color: #00ff00 !important; margin-bottom: 6px !important; width: 100%; }
+  #score-board { font-size: 14px !important; color: #00ff00 !important; margin-bottom: 5px !important; width: 100%; text-align: center !important; }
   
   #canvas-wrapper {
     width: 240px !important;
@@ -86,16 +93,16 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     display: none !important; 
   }
 
-  /* НА СМАРТФОНАХ */
+  /* НА СМАРТФОНАХ: Сжимаем поле и жестко притягиваем джойстик наверх */
   @media (max-width: 768px) { 
     #game-container {
       width: 100% !important;
-      max-width: 360px !important; 
+      max-width: 340px !important; 
     }
     #canvas-wrapper {
       width: 100% !important;
       height: auto !important;
-      max-width: 180px !important; 
+      max-width: 175px !important; /* Оптимальное сжатие стакана на мобилках */
     }
     canvas {
       width: 100% !important;
@@ -105,11 +112,13 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
       display: flex !important; 
       flex-direction: column !important;
       align-items: center !important;
-      margin-top: 10px !important; 
+      margin-top: 5px !important; /* Кнопки прижаты строго под стаканом */
       width: 100% !important;
+      max-height: 240px !important; /* Защита от расползания вниз */
     } 
   }
 
+  /* Стили крестовины */
   .dpad-row {
     display: flex !important;
     justify-content: center !important;
@@ -119,13 +128,13 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
   }
   .dpad-btn, .dpad-empty {
     width: 105px !important;  
-    height: 90px !important; 
+    height: 85px !important; 
     box-sizing: border-box !important;
     margin: 2px !important;
   }
   .drop-btn {
-    width: 334px !important;
-    height: 55px !important;
+    width: 324px !important;
+    height: 50px !important;
     font-size: 14px !important;
     font-weight: bold !important;
   }
@@ -200,15 +209,14 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     return matrix;
   }
 
-  /* ЖЕСТКИЕ МАТРИЦЫ С ЯВНЫМИ НУЛЯМИ: Теперь у фигур железно есть дно и физика! */
   function createPiece(type) {
-    if (type === 'T') return [[0, 1, 0], [1, 1, 1], [0, 0, 0]];
-    if (type === 'O') return [[2, 2], [2, 2]];
-    if (type === 'L') return [[0, 0, 3], [3, 3, 3], [0, 0, 0]];
-    if (type === 'J') return [[4, 0, 0], [4, 4, 4], [0, 0, 0]];
-    if (type === 'I') return [[0, 0, 0, 0], [5, 5, 5, 5], [0, 0, 0, 0], [0, 0, 0, 0]];
-    if (type === 'S') return [[0, 6, 6], [6, 6, 0], [0, 0, 0]];
-    if (type === 'Z') return [[7, 7, 0], [0, 7, 7], [0, 0, 0]];
+    if (type === 'T') return [[0, 1, 0], [1, 1, 1], [0, 0, 0\|0, 1, 0], [1, 1, 1], [0, 0, 0]];
+    if (type === 'O') return [[2, 2], [2, 2\|2, 2], [2, 2]];
+    if (type === 'L') return [[0, 0, 3], [3, 3, 3], [0, 0, 0\|0, 0, 3], [3, 3, 3], [0, 0, 0]];
+    if (type === 'J') return [[4, 0, 0], [4, 4, 4], [0, 0, 0\|4, 0, 0], [4, 4, 4], [0, 0, 0]];
+    if (type === 'I') return [[0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0\|0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0]];
+    if (type === 'S') return [[0, 6, 6], [6, 6, 0], [0, 0, 0\|0, 6, 6], [6, 6, 0], [0, 0, 0]];
+    if (type === 'Z') return [[7, 7, 0], [0, 7, 7], [0, 0, 0\|7, 7, 0], [0, 7, 7], [0, 0, 0]];
   }
 
   function draw() {
@@ -297,7 +305,7 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
     while (collide(arena, player)) {
       player.pos.x += offset;
       offset = -(offset + (offset > 0 ? 1 : -1));
-      if (offset > player.matrix.length) {
+      if (offset > player.matrix[0].length) {
         rotate(player.matrix, -dir);
         player.pos.x = pos;
         return;
@@ -347,13 +355,3 @@ _Управление на ПК: Стрелочки (Влево/Вправо —
   function handleDpad(code) {
     if (code === 37) playerMove(-1);
     if (code === 39) playerMove(1);
-    if (code === 40) playerDrop();
-    if (code === 38) playerRotate(1);
-    if (code === 32) playerHardDrop();
-  }
-
-  let score = 0;
-  let lines = 0;
-  playerReset();
-  update();
-</script>
