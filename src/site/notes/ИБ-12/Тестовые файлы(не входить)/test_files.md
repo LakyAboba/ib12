@@ -65,77 +65,21 @@ _Каждый может отмечать галочками свои задач
 
 ---
 ---
-
 ---
 
 ## 📓 Мои личные заметки к ДЗ
 _Этот блокнот персональный. Текст видишь только ты, и он автоматически сохраняется в твоём браузере!_
 
-<div id="personal-notebook-container">
+<div id="personal-notebook-container" align="center" style="width: 100%; text-align: center;">
+  <!-- Жестко задаем огромный размер через rows, cols и инлайн-стиль шрифта -->
   <textarea 
     id="personal-notebook" 
-    placeholder="Привет"
+    rows="15" 
+    style="width: 100%; max-width: 100%; background-color: #1e1e1e; color: #00ff00; border: 2px solid #00ff00; border-radius: 8px; padding: 15px; font-family: monospace; font-size: 18px; line-height: 1.6; box-sizing: border-box;"
+    placeholder="Впиши сюда свои дедлайны, номера задач по вариантам или ссылки на отчёты... Программа всё запомнит!"
   ></textarea>
-  <div id="notebook-status">✓ Сохранено локально</div>
+  <div id="notebook-status" style="font-size: 12px; color: #888888; margin-top: 5px; font-style: italic; text-align: right; transition: opacity 0.3s ease; opacity: 0;">✓ Все изменения сохранены локально</div>
 </div>
-
-<style>
-  /* Взламываем рамки узкой статьи: делаем поле огромным на 92% ширины всего экрана */
-  #personal-notebook-container {
-    width: 92vw !important;
-    max-width: 92vw !important;
-    position: relative !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important; /* Ровное центрирование без слома верстки */
-    margin: 20px 0 !important;
-    box-sizing: border-box !important;
-    text-align: left !important;
-    display: block !important;
-  }
-  
-  #personal-notebook {
-    width: 100% !important;      /* Изначально на всю ширь огромного контейнера */
-    height: 250px !important;    /* Увеличили начальную высоту, чтобы поле было массивным */
-    background: #1e1e1e !important;
-    color: #00ff00 !important;
-    border: 2px solid #00ff00 !important;
-    border-radius: 10px !important;
-    padding: 18px !important;    /* Больше внутренних отступов */
-    font-family: monospace !important;
-    font-size: 16px !important;   /* Увеличили размер шрифта для масштабности */
-    line-height: 1.6 !important;
-    resize: vertical !important; 
-    box-sizing: border-box !important;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.15);
-  }
-  
-  #personal-notebook:focus {
-    outline: none !important;
-    box-shadow: 0 0 25px rgba(0, 255, 0, 0.35) !important;
-  }
-  
-  #notebook-status {
-    font-size: 13px !important;
-    color: #888888 !important;
-    margin-top: 6px !important;
-    font-style: italic !important;
-    text-align: right !important;
-    transition: opacity 0.3s ease;
-    opacity: 0;
-  }
-
-  /* НА СМАРТФОНАХ: Чуть поджимаем под экраны мобилок, чтобы не прилипало к краям дисплея */
-  @media (max-width: 768px) {
-    #personal-notebook-container {
-      width: 95vw !important;
-      max-width: 95vw !important;
-    }
-    #personal-notebook {
-      font-size: 15px !important;
-      height: 220px !important;
-    }
-  }
-</style>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
@@ -169,3 +113,6 @@ _Этот блокнот персональный. Текст видишь то�
     });
   });
 </script>
+
+---
+
