@@ -2,60 +2,49 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test3/","dg-note-properties":{}}
 ---
 
-# 🧠 Проверка на прочность ИБ-12 | DOS DOOM (1993)
+# 📺 Полезные видеоматериалы | ИБ-12
 
-_Управление: кликни мышкой по окну игры, чтобы активировать клавиатуру. Стрелочки/WASD — движение, Ctrl/ЛКМ — огонь, Пробел — открыть дверь._
+_Ниже пример того, как видео с YouTube будет аккуратно отображаться на компьютерах и смартфонах без косяков с версткой._
 
-<div id="doom-super-wrapper">
-  <div id="doom-container">
-    <!-- Изолированное фрейм-окно со стабильного незаблокированного CDN -->
+<div id="video-super-wrapper">
+  <div id="video-container">
+    <[!-- Сюда вставляется код, скопированный с YouTube -](https://www.youtube.com/watch?v=AuKR2fQbMBk)->
     <iframe 
-      src="https://archive.org" 
-      width="100%" 
-      height="100%" 
+      src="https://youtube.com" 
+      title="YouTube video player" 
       frameborder="0" 
-      webkitallowfullscreen="true" 
-      mozallowfullscreen="true" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
       allowfullscreen>
     </iframe>
   </div>
 </div>
 
 <style>
-  /* Блокируем скролл страницы на ПК, чтобы экран не прыгал при нажатии на Пробел */
-  @media (min-width: 769px) {
-    html, body, .quartz-page, main, article {
-      overflow: hidden !important;
-      height: 100% !important;
-    }
-  }
-
-  #doom-super-wrapper {
+  #video-super-wrapper {
     width: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
-    text-align: center !important;
-    padding: 0 !important;
-    margin: 0 auto !important;
-  }
-
-  #doom-container {
-    width: 680px;
-    height: 440px;
-    background: #000;
-    border: 3px solid #ff0000;
-    border-radius: 10px;
-    box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
+    max-width: 640px; /* Максимальная ширина видео на ПК */
     margin: 15px auto !important;
-    overflow: hidden;
+    padding: 0 10px;
     box-sizing: border-box;
   }
-
-  /* Адаптивность для мобильных телефонов */
-  @media (max-width: 768px) {
-    #doom-container {
-      width: 100% !important;
-      height: 280px !important;
-    }
+  
+  /* Делаем контейнер адаптивным (соотношение сторон 16:9) */
+  #video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    overflow: hidden;
+    border: 2px solid #00ff00; /* Хакерская зеленая рамка в стиле ИБ */
+    border-radius: 8px;
+    background: #000;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+  }
+  
+  #video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
 </style>
