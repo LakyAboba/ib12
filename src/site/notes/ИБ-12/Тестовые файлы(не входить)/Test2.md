@@ -2,26 +2,32 @@
 {"dg-publish":true,"permalink":"/ib-12/testovye-fajly-ne-vhodit/test2/","dg-note-properties":{}}
 ---
 
-# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.2
+# 🎮 Перерыв на ИБ-12 | Терминальная Змейка v2.3
 
-_Управление: стрелочки на клавиатуре или кнопки на экране (для мобилок). Змейка умеет проходить сквозь стены!_
+_Управление: стрелочки на клавиатуре (на ПК) или крестовина на экране (на мобилках). Змейка умеет проходить сквозь стены!_
 
 <div id="game-container">
   <div id="score-board">Счёт: <span id="score">0</span> | Рекорд: <span id="high-score">0</span></div>
   
-  <!-- Обертка для адаптивного сжатия холста -->
+  <!-- Адаптивный контейнер для холста -->
   <div id="canvas-wrapper">
     <canvas id="gameCanvas" width="500" height="500"></canvas>
   </div>
   
-  <!-- Идеальный d-pad крестик для телефонов -->
+  <!-- Жесткая табличная крестовина (D-pad) для мобилок -->
   <div id="controls-wrapper">
-    <div id="controls">
-      <button class="btn-up" onclick="changeDirection({keyCode: 38})">🔼</button>
-      <button class="btn-left" onclick="changeDirection({keyCode: 37})">◀️</button>
-      <button class="btn-down" onclick="changeDirection({keyCode: 40})">🔽</button>
-      <button class="btn-right" onclick="changeDirection({keyCode: 39})">▶️</button>
-    </div>
+    <table id="dpad-table">
+      <tr>
+        <td></td>
+        <td><button class="dpad-btn" onclick="changeDirection({keyCode: 38})">🔼</button></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><button class="dpad-btn" onclick="changeDirection({keyCode: 37})">◀️</button></td>
+        <td><button class="dpad-btn" onclick="changeDirection({keyCode: 40})">🔽</button></td>
+        <td><button class="dpad-btn" onclick="changeDirection({keyCode: 39})">▶️</button></td>
+      </tr>
+    </table>
   </div>
 </div>
 
@@ -39,60 +45,71 @@ _Управление: стрелочки на клавиатуре или кн�
   }
   #score-board { font-size: 18px; margin-bottom: 10px; }
   
-  /* Контейнер для авто-масштабирования игрового поля на мобилках */
+  /* НА ПК: Холст фиксированный, большой (500px) */
   #canvas-wrapper {
-    width: 100%;
-    max-width: 500px;
+    width: 500px;
+    height: 500px;
     margin: 0 auto;
   }
   canvas { 
     border: 2px solid #00ff00; 
     background-color: #000; 
     box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
-    width: 100% !important; /* Заставляет холст сжиматься под экран */
-    height: auto !important;
     display: block;
+    width: 100%;
+    height: 100%;
   }
   
-  /* Контейнер управления на мобилках */
+  /* НА ПК: Кнопки полностью скрыты */
   #controls-wrapper { 
-    margin-top: 20px; 
     display: none; 
-    justify-content: center; 
+    margin-top: 20px;
     width: 100%;
   }
-  
-  /* Жесткая сетка 3х3 для идеального крестика (D-pad) */
-  #controls { 
-    display: grid !important; 
-    grid-template-columns: 60px 60px 60px !important; 
-    grid-template-rows: 55px 55px !important; 
-    gap: 5px !important; 
-    justify-content: center !important;
-  }
-  #controls button { 
-    font-size: 22px; 
-    background: #222; 
-    border: 1px solid #00ff00; 
-    color: #00ff00; 
-    border-radius: 8px; 
-    cursor: pointer; 
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Фиксируем позиции кнопок в сетке, исключая их выстраивание в ряд */
-  .btn-up { grid-column: 2 !important; grid-row: 1 !important; }
-  .btn-left { grid-column: 1 !important; grid-row: 2 !important; }
-  .btn-down { grid-column: 2 !important; grid-row: 2 !important; }
-  .btn-right { grid-column: 3 !important; grid-row: 2 !important; }
 
-  /* Включаем джойстик только на сенсорных экранах/смартфонах */
+  /* Стили абсолютно жесткой таблицы-крестовины */
+  #dpad-table {
+    margin: 0 auto !important;
+    border-collapse: collapse !important;
+    border: none !important;
+    background: transparent !important;
+  }
+  #dpad-table td {
+    width: 60px !important;
+    height: 55px !important;
+    padding: 3px !important;
+    border: none !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    background: transparent !important;
+  }
+  .dpad-btn { 
+    width: 100% !important;
+    height: 100% !important;
+    font-size: 22px !important; 
+    background: #222 !important; 
+    border: 1px solid #00ff00 !important; 
+    color: #00ff00 !important; 
+    border-radius: 8px !important; 
+    cursor: pointer !important; 
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* НА СМАРТФОНАХ: Включаем адаптивное сжатие поля и показываем крестовину */
   @media (max-width: 768px) { 
-    #controls-wrapper { display: flex !important; } 
+    #canvas-wrapper {
+      width: 100% !important;
+      height: auto !important;
+    }
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+    }
+    #controls-wrapper { 
+      display: block !important; 
+    } 
   }
 </style>
 
